@@ -53,8 +53,12 @@
     <label style="display:flex; flex-direction:column; gap:4px; font-size:13px; font-weight:600; color:#334155;">
       URL do serviço (sem barra no fim)
       <input id="mt-url" type="url" inputmode="url" spellcheck="false"
+        value="https://vision.ufabc.edu.br/ollama"
         placeholder="https://SEU-SERVIDOR/ollama"
         style="padding:9px 10px; border:1px solid #cbd5e1; border-radius:6px; font-size:14px; font-family:ui-monospace,monospace;" />
+      <span style="font-weight:400; color:#64748b; font-size:11.5px;">
+        Já preenchida com o proxy do vision (sem barra no fim); ajuste se necessário.
+      </span>
     </label>
 
     <label style="display:flex; flex-direction:column; gap:4px; font-size:13px; font-weight:600; color:#334155;">
@@ -129,7 +133,7 @@
 
   <div id="mt-status"
     style="padding:10px 12px; border-radius:6px; font-size:14px; font-weight:600; background:#f1f5f9; color:#334155; margin-bottom:12px;">
-    Informe a URL do serviço e o token da disciplina; depois clique em “Testar conexão”.
+    A URL já vem preenchida com o proxy do vision. Informe o token da disciplina e clique em “Testar conexão”.
   </div>
 
   <div id="mt-model-area" style="display:none; margin-bottom:14px;">
@@ -148,7 +152,9 @@
     <div style="margin-top:10px; line-height:1.6;">
       <p style="margin:0 0 8px 0;">
         O token é uma <strong>chave de acesso ao proxy institucional</strong>, não a senha
-        do Moodle e não a chave do Ollama (o Ollama não usa chave). Quem valida o token
+        do Moodle e não a chave do Ollama (o Ollama não usa chave). A URL já vem
+        preenchida com a do <code>vision</code>; o professor pode sobrescrevê-la com
+        <code>data-url</code> no bloco do VPL da disciplina. Quem valida o token
         é o proxy; ele pode limitar modelos, cota por dia e revogar o acesso.
       </p>
       <p style="margin:0 0 8px 0;">
@@ -320,7 +326,7 @@
 
   const presetUrl = (app.dataset.url || '').trim();
   const presetToken = (app.dataset.token || '').trim();
-  if (presetUrl && !urlEl.value) urlEl.value = presetUrl;
+  if (presetUrl) urlEl.value = presetUrl;
   if (presetToken && !keyEl.value) keyEl.value = presetToken;
 
   const SPEED_INFO = [
@@ -752,7 +758,7 @@
   btnList.addEventListener('click', listModels);
   btnSend.addEventListener('click', sendPrompt);
   btnClear.addEventListener('click', () => {
-    setStatus('Informe a URL do serviço e o token da disciplina; depois clique em “Testar conexão”.', 'info');
+    setStatus('A URL já vem preenchida com o proxy do vision. Informe o token da disciplina e clique em “Testar conexão”.', 'info');
     setOutput('');
     modelsArea.style.display = 'none';
     modelsEl.textContent = '';

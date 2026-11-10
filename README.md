@@ -4,8 +4,8 @@ Página pública e estática para testar o acesso ao proxy do Ollama usado nos
 laboratórios de CS2 (Python, Moodle + VPL) da UFABC.
 
 - Abra `https://fzampirolli.github.io/maquina-tempo/`.
-- Preencha a URL do proxy fornecida pelo professor, o tipo de API
-  (`Ollama — POST /api/chat`), o modelo e o token da disciplina.
+- A URL do proxy já vem preenchida (sem barra no fim); ajuste se necessário.
+  Escolha o tipo de API (`Ollama — POST /api/chat`), o modelo e informe o token da disciplina.
 - Clique em **Testar conexão (GET)** para listar os modelos e escolha um cartão;
   depois clique em **Enviar prompt (POST)**.
 
