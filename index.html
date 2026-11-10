@@ -6,7 +6,7 @@
 <title>Testador de acesso ao Ollama — Máquina do Tempo</title>
 </head>
 <body style="margin:0; padding:24px; background:#f8fafc;">
-<div id="mt-ollama-app" data-url="" data-token=""
+<div id="mt-ollama-app" data-url=""
   style="font-family: 'Segoe UI',system-ui,Roboto,Arial,sans-serif; line-height: 1.55; color: #1f2937; max-width: 1040px; margin: 0 auto; border: 1px solid #d7dee8; border-radius: 12px; padding: 20px; background: #ffffff; box-sizing: border-box;">
 
   <h2 style="margin: 0 0 6px 0; color: #0b4f9c; font-size: 23px;">
@@ -90,21 +90,16 @@
     </label>
 
     <label style="display:flex; flex-direction:column; gap:4px; font-size:13px; font-weight:600; color:#334155;">
-      Token da disciplina <span style="color:#b91c1c;">*</span>
+      Token do professor <span style="color:#b91c1c;">*</span>
       <input id="mt-key" type="password" autocomplete="off" spellcheck="false"
         aria-required="true"
         placeholder="obrigatório no proxy institucional"
         style="padding:9px 10px; border:1px solid #cbd5e1; border-radius:6px; font-size:14px;" />
       <span style="font-weight:400; color:#64748b; font-size:11.5px;">
-        Não é a senha do Moodle e não é salvo. É a chave de acesso ao proxy.
+        Não é a senha do Moodle e não é salvo. É a chave pessoal do professor; não compartilhe com alunos.
       </span>
     </label>
   </div>
-
-  <label style="display:flex; align-items:center; gap:8px; font-size:13px; color:#475569; margin-bottom:12px;">
-    <input id="mt-no-token" type="checkbox" style="accent-color:#0b6bcb;">
-    O serviço não exige token (use só em teste local, ex.: <code>http://localhost:11434</code>)
-  </label>
 
   <label style="display:flex; flex-direction:column; gap:4px; font-size:13px; font-weight:600; color:#334155; margin-bottom:12px;">
     Prompt de teste
@@ -133,7 +128,7 @@
 
   <div id="mt-status"
     style="padding:10px 12px; border-radius:6px; font-size:14px; font-weight:600; background:#f1f5f9; color:#334155; margin-bottom:12px;">
-    A URL já vem preenchida com o proxy do vision. Informe o token da disciplina e clique em “Testar conexão”.
+    A URL já vem preenchida com o proxy do vision. Informe o token do professor e clique em “Testar conexão”.
   </div>
 
   <div id="mt-model-area" style="display:none; margin-bottom:14px;">
@@ -147,58 +142,57 @@
   <pre id="mt-output"
     style="margin:0; padding:14px; background:#0f172a; color:#e2e8f0; border-radius:8px; font-size:12.5px; line-height:1.45; white-space:pre-wrap; word-break:break-word; max-height:420px; overflow:auto;">(a saída aparece aqui)</pre>
 
-  <details style="margin-top:14px; font-size:13px; color:#475569;" open>
-    <summary style="cursor:pointer; font-weight:700; color:#334155;">O que é o token e como distribuí-lo entre professores?</summary>
+  <details style="margin-top:14px; font-size:13px; color:#475569;">
+    <summary style="cursor:pointer; font-weight:700; color:#334155;">Token: pessoal do professor (não do aluno)</summary>
     <div style="margin-top:10px; line-height:1.6;">
       <p style="margin:0 0 8px 0;">
-        O token é uma <strong>chave de acesso ao proxy institucional</strong>, não a senha
-        do Moodle e não a chave do Ollama (o Ollama não usa chave). A URL já vem
-        preenchida com a do <code>vision</code>; o professor pode sobrescrevê-la com
-        <code>data-url</code> no bloco do VPL da disciplina. Quem valida o token
-        é o proxy; ele pode limitar modelos, cota por dia e revogar o acesso.
+        O token é uma <strong>chave pessoal do professor</strong> para o proxy
+        institucional. Não é a senha do Moodle e não é a chave do Ollama (o Ollama
+        não usa chave). Cada professor recebe o seu; <strong>não compartilhe com
+        alunos</strong>.
       </p>
       <p style="margin:0 0 8px 0;">
-        <strong>Hoje:</strong> o proxy usa um token único configurado pelo administrador.
-        Isso serve para um piloto, mas <strong>não é bom para vários professores</strong>:
-        todos compartilhariam a mesma chave e não haveria como revogar ou medir uma
-        disciplina sem afetar as outras.
+        <strong>Por que o aluno não pode receber:</strong> qualquer coisa colocada
+        no HTML do VPL ou digitada no navegador pode ser vista e copiada pelo aluno.
+        Se o token for para o aluno, ele vaza. Por isso este testador é uma
+        ferramenta do professor.
       </p>
       <p style="margin:0 0 8px 0;">
-        <strong>Recomendado:</strong> um token por disciplina/professor. O professor
-        recebe a chave da disciplina e a distribui para a turma. O proxy registra o
-        uso por rótulo (ex.: <code>cs2-2027-1</code>), aplica cota e permite revogar
-        sem mexer nas outras disciplinas. O administrador do proxy tem o roteiro completo de tokens por disciplina.
+        <strong>Como o aluno vai usar:</strong> a versão do aluno será um serviço
+        no servidor com login do Moodle via <strong>LTI 1.3/SSO</strong>. O serviço
+        guarda o token de serviço no servidor e o aluno recebe apenas uma sessão;
+        o token nunca vai ao navegador. O professor define o prompt de restrição
+        de cada atividade no servidor (ex.: “responda só como socrático, nunca
+        forneça trechos de código”), e o aluno não consegue alterá-lo.
       </p>
       <p style="margin:0 0 8px 0;">
-        <strong>Como entregar ao aluno:</strong> o professor pode (a) compartilhar o
-        token da disciplina no Moodle e pedir que o aluno cole no campo acima; ou
-        (b) preencher os atributos <code>data-url</code> e <code>data-token</code>
-        deste bloco no HTML do VPL daquela disciplina. Em (b), o aluno consegue ver
-        o token no código da página: trate-o como <strong>chave da turma</strong>,
-        não como segredo pessoal. Nunca use o token de administração no HTML de aluno
-        e nunca o coloque em repositório público.
+        <strong>Distribuição:</strong> o administrador gera um token por professor,
+        guarda o hash e entrega o token em canal privado. O professor usa no
+        testador ou em ferramentas próprias; não coloca no HTML do aluno, no
+        Moodle, em print ou no Git. Revogação e rotação são por professor.
       </p>
       <p style="margin:0;">
-        <strong>O token não identifica o aluno.</strong> Para cota por aluno ou
-        autenticação individual, seria preciso Moodle/LTI ou outro login; isso é uma
-        fase posterior. Para o piloto, token por disciplina + cota + rotação já
-        resolve o uso por vários professores.
+        <strong>Hoje:</strong> o proxy usa um token único de piloto. O próximo passo
+        é o <code>tokens.json</code> por professor e o serviço do aluno com LTI.
+        O roteiro completo está com o administrador do proxy
+        (<code>docs/TOKENS-E-DISTRIBUICAO.md</code> e
+        <code>docs/AUTENTICACAO-E-PROMPTS.md</code>).
       </p>
     </div>
   </details>
 
-  <details style="margin-top:10px; font-size:13px; color:#475569;" open>
+  <details style="margin-top:10px; font-size:13px; color:#475569;">
     <summary style="cursor:pointer; font-weight:700; color:#334155;">Roteiro para mostrar aos colegas (5 passos)</summary>
     <ol style="margin:10px 0 0 20px; padding:0;">
       <li>Abra esta página e confira o diagrama: navegador → servidor web → proxy → servidor de modelos.</li>
-      <li>Informe a URL, cole o token e clique em <strong>Testar conexão (GET)</strong>: ele lê a versão e o <code>/api/tags</code>.</li>
+      <li>Confira a URL, cole o token do professor e clique em <strong>Testar conexão (GET)</strong>: ele lê a versão e o <code>/api/tags</code>.</li>
       <li>Veja os cartões de modelos: parâmetros, quantização, contexto e capacidades.</li>
       <li>Clique em um modelo (ex.: <code>qwen2.5-coder:14b</code> para código ou <code>qwen3:14b</code> para raciocínio) e envie o prompt.</li>
       <li>Mostre o JSON bruto: ele mostra exatamente o que o proxy devolveu.</li>
     </ol>
   </details>
 
-  <details style="margin-top:10px; font-size:13px; color:#475569;" open>
+  <details style="margin-top:10px; font-size:13px; color:#475569;">
     <summary style="cursor:pointer; font-weight:700; color:#334155;">Diferencial e tempo estimado de cada modelo (do mais rápido ao mais lento)</summary>
     <div style="overflow-x:auto; margin-top:10px;">
       <table style="width:100%; border-collapse:collapse; font-size:12.5px;">
@@ -312,7 +306,6 @@
   const apiEl = $('mt-api');
   const modelEl = $('mt-model');
   const keyEl = $('mt-key');
-  const noTokenEl = $('mt-no-token');
   const promptEl = $('mt-prompt');
   const statusEl = $('mt-status');
   const outputEl = $('mt-output');
@@ -325,9 +318,7 @@
   const btnClear = $('mt-clear');
 
   const presetUrl = (app.dataset.url || '').trim();
-  const presetToken = (app.dataset.token || '').trim();
   if (presetUrl) urlEl.value = presetUrl;
-  if (presetToken && !keyEl.value) keyEl.value = presetToken;
 
   const SPEED_INFO = [
     { match: 'nomic-embed', rank: 0, label: '<1 s (embeddings)' },
@@ -378,13 +369,26 @@
     return value;
   }
 
-  function tokenRequired() {
-    return !noTokenEl.checked;
-  }
-
   function ensureToken() {
-    if (tokenRequired() && !(keyEl.value || '').trim()) {
-      setStatus('O proxy institucional exige token. Cole o token da disciplina ou marque “O serviço não exige token” apenas para teste local.', 'err');
+    let token = (keyEl.value || '').trim();
+    // Remove aspas/accentos invisíveis de copiar/colar.
+    token = token.replace(/^[\u2018\u2019\u201c\u201d'"`]+|[\u2018\u2019\u201c\u201d'"`]+$/g, '').trim();
+    keyEl.value = token;
+
+    if (!token) {
+      setStatus('O proxy institucional exige o token do professor. Cole o token pessoal.', 'err');
+      return false;
+    }
+    if (/\s/.test(token)) {
+      setStatus('O token contém espaço no meio. Copie novamente, sem espaços.', 'err');
+      return false;
+    }
+    const bad = Array.from(token).find((ch) => {
+      const code = ch.codePointAt(0);
+      return code < 0x21 || code > 0x7e;
+    });
+    if (bad) {
+      setStatus('O token contém um caractere inválido (' + JSON.stringify(bad) + '). Ele deve ter só letras/números/símbolos ASCII, sem acentos, aspas curvas ou espaços. Copie novamente do instalador.', 'err');
       return false;
     }
     return true;
@@ -758,7 +762,7 @@
   btnList.addEventListener('click', listModels);
   btnSend.addEventListener('click', sendPrompt);
   btnClear.addEventListener('click', () => {
-    setStatus('A URL já vem preenchida com o proxy do vision. Informe o token da disciplina e clique em “Testar conexão”.', 'info');
+    setStatus('A URL já vem preenchida com o proxy do vision. Informe o token do professor e clique em “Testar conexão”.', 'info');
     setOutput('');
     modelsArea.style.display = 'none';
     modelsEl.textContent = '';
@@ -771,10 +775,6 @@
       sendPrompt();
     }
   });
-
-  if (presetUrl && presetToken) {
-    setStatus('URL e token da disciplina já configurados. Clique em “Testar conexão”.', 'info');
-  }
 
   if (location.protocol === 'https:' && /^http:\/\//i.test(urlEl.value)) {
     setStatus('A página é HTTPS e a URL começa com http:// — o navegador vai bloquear. Use https://.', 'warn');
