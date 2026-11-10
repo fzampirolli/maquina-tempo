@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Teste de acesso ao Ollama — versão local</title>
+</head>
+<body style="margin:0; padding:24px; background:#f8fafc;">
+<div id="mt-ollama-app"
+  style="font-family: 'Segoe UI',system-ui,Roboto,Arial,sans-serif; line-height: 1.55; color: #1f2937; max-width: 980px; margin: 0 auto; border: 1px solid #d7dee8; border-radius: 12px; padding: 20px; background: #ffffff; box-sizing: border-box;">
+
+  <h2 style="margin: 0 0 6px 0; color: #0b4f9c; font-size: 22px;">
+    🔌 Teste de acesso ao Ollama — dentro do VPL
+  </h2>
+  <p style="margin: 0 0 14px 0; color: #475569; font-size: 14px;">
+    Este bloco roda <strong>no navegador do aluno</strong>. Ele não fala com
+    <code>127.0.0.1:11434</code>: aponte para um serviço <strong>HTTPS no vision</strong>
+    (proxy do Ollama ou gateway) que encaminhe para o <code>guiou-Dell</code>.
+    Se a página do VPL é HTTPS, a URL do serviço também precisa ser HTTPS.
+  </p>
+
+  <div style="background:#f0f7ff; border-left:5px solid #2d7ef7; padding:12px 14px; margin-bottom:16px; border-radius:4px; font-size:13px; color:#1e3a5f;">
+    <strong>O que este teste verifica:</strong> se o navegador consegue alcançar o serviço
+    (GET), se o CORS/preflight está correto (POST) e se o modelo responde. O JSON bruto
+    aparece no fim para facilitar o diagnóstico.
+  </div>
+
+  <div style="display:grid; grid-template-columns: 1fr 1fr; gap:12px; margin-bottom:12px;">
+    <label style="display:flex; flex-direction:column; gap:4px; font-size:13px; font-weight:600; color:#334155;">
+      URL do serviço (sem barra no fim)
+      <input id="mt-url" type="url" inputmode="url" spellcheck="false"
+        value="https://vision.ufabc.edu.br/ollama"
+        style="padding:9px 10px; border:1px solid #cbd5e1; border-radius:6px; font-size:14px; font-family:ui-monospace,monospace;" />
+    </label>
+
+    <label style="display:flex; flex-direction:column; gap:4px; font-size:13px; font-weight:600; color:#334155;">
+      Tipo de API
+      <select id="mt-api"
+        style="padding:9px 10px; border:1px solid #cbd5e1; border-radius:6px; font-size:14px; background:#fff;">
+        <option value="ollama-chat">Ollama — POST /api/chat</option>
+        <option value="ollama-generate">Ollama — POST /api/generate</option>
+        <option value="openai">OpenAI-compatível — POST /v1/chat/completions</option>
+        <option value="custom">Personalizado — POST direto na URL</option>
+      </select>
+    </label>
+
+    <label style="display:flex; flex-direction:column; gap:4px; font-size:13px; font-weight:600; color:#334155;">
+      Modelo
+      <input id="mt-model" type="text" spellcheck="false" value="qwen3:14b"
+        style="padding:9px 10px; border:1px solid #cbd5e1; border-radius:6px; font-size:14px; font-family:ui-monospace,monospace;" />
+      <span style="font-weight:400; color:#64748b; font-size:11.5px;">Para o qwen3, o teste envia <code>think:false</code> (resposta rápida).</span>
+    </label>
+
+    <label style="display:flex; flex-direction:column; gap:4px; font-size:13px; font-weight:600; color:#334155;">
+      Token (opcional; não é salvo)
+      <input id="mt-key" type="password" autocomplete="off" spellcheck="false"
+        placeholder="Bearer token, se o proxy exigir"
+        style="padding:9px 10px; border:1px solid #cbd5e1; border-radius:6px; font-size:14px;" />
+    </label>
+  </div>
+
+  <label style="display:flex; flex-direction:column; gap:4px; font-size:13px; font-weight:600; color:#334155; margin-bottom:12px;">
+    Prompt de teste
+    <textarea id="mt-prompt" rows="3"
+      style="padding:9px 10px; border:1px solid #cbd5e1; border-radius:6px; font-size:14px; resize:vertical;">Responda em uma frase: qual é a capital do Brasil?</textarea>
+  </label>
+
+  <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px;">
+    <button id="mt-test-version" type="button"
+      style="padding:10px 16px; background:#0b6bcb; color:#fff; border:0; border-radius:6px; font-size:14px; font-weight:600; cursor:pointer;">
+      Testar conexão (GET)
+    </button>
+    <button id="mt-send" type="button"
+      style="padding:10px 16px; background:#18864b; color:#fff; border:0; border-radius:6px; font-size:14px; font-weight:600; cursor:pointer;">
+      Enviar prompt (POST)
+    </button>
+    <button id="mt-clear" type="button"
+      style="padding:10px 16px; background:#e2e8f0; color:#334155; border:0; border-radius:6px; font-size:14px; font-weight:600; cursor:pointer;">
+      Limpar
+    </button>
+  </div>
+
+  <div id="mt-status"
+    style="padding:10px 12px; border-radius:6px; font-size:14px; font-weight:600; background:#f1f5f9; color:#334155; margin-bottom:12px;">
+    Pronto. Ajuste a URL e clique em “Testar conexão”.
+  </div>
+
+  <pre id="mt-output"
+    style="margin:0; padding:14px; background:#0f172a; color:#e2e8f0; border-radius:8px; font-size:12.5px; line-height:1.45; white-space:pre-wrap; word-break:break-word; max-height:420px; overflow:auto;">(a saída aparece aqui)</pre>
+
+  <details style="margin-top:14px; font-size:13px; color:#475569;">
+    <summary style="cursor:pointer; font-weight:600; color:#334155;">Se der erro, veja o checklist</summary>
+    <ul style="margin:10px 0 0 18px; padding:0;">
+      <li><strong>Página HTTPS + URL HTTP</strong> → o navegador bloqueia (mixed content). Use HTTPS no serviço.</li>
+      <li><strong>“Failed to fetch”</strong> → pode ser CORS, DNS, rede ou servidor fora do ar. Confira a aba Console/Network do navegador (F12).</li>
+      <li><strong>CORS</strong> → o serviço precisa responder <code>Access-Control-Allow-Origin</code> para a origem do Moodle e tratar <code>OPTIONS</code> (o POST JSON dispara preflight).</li>
+      <li><strong>404</strong> → caminho errado. Confira <code>/api/chat</code>, <code>/api/generate</code> ou <code>/v1/chat/completions</code>.</li>
+      <li><strong>401/403</strong> → token/permissão. Preencha o campo Token ou ajuste o proxy.</li>
+      <li><strong>Timeout</strong> → o modelo pode estar carregando na GPU; tente de novo ou use um modelo menor.</li>
+      <li><strong>GET funciona, POST falha</strong> → quase sempre é o preflight CORS do <code>OPTIONS</code>.</li>
+      <li><strong>CSP</strong> → a página do Moodle pode bloquear conexões para outro domínio (<code>connect-src</code>). Veja o Console (F12).</li>
+      <li><strong>O editor do VPL removeu o &lt;script&gt;</strong> → teste a versão standalone; se necessário, use um link/iframe para a página do teste.</li>
+    </ul>
+  </details>
+
+  <p style="margin:14px 0 0 0; font-size:12px; color:#64748b;">
+    Dica: para testar o Ollama no seu computador, use a URL
+    <code>http://localhost:11434</code> e o tipo “Ollama — /api/chat”.
+    No VPL de produção, use o proxy HTTPS do <code>vision</code>.
+    <strong>Não embuta o token no HTML em produção:</strong> o aluno consegue vê-lo;
+    use o campo Token apenas no teste.
+  </p>
+</div>
+
+<script>
+(() => {
+  'use strict';
+
+  const app = document.getElementById('mt-ollama-app');
+  if (!app || app.dataset.mtInit === '1') return;
+  app.dataset.mtInit = '1';
+
+  const $ = (id) => document.getElementById(id);
+  const urlEl = $('mt-url');
+  const apiEl = $('mt-api');
+  const modelEl = $('mt-model');
+  const keyEl = $('mt-key');
+  const promptEl = $('mt-prompt');
+  const statusEl = $('mt-status');
+  const outputEl = $('mt-output');
+  const btnVersion = $('mt-test-version');
+  const btnSend = $('mt-send');
+  const btnClear = $('mt-clear');
+
+  const COLORS = {
+    info: { bg: '#f1f5f9', fg: '#334155' },
+    ok:   { bg: '#e8f7ee', fg: '#166534' },
+    warn: { bg: '#fff7e6', fg: '#92400e' },
+    err:  { bg: '#fdecec', fg: '#991b1b' },
+  };
+
+  function setStatus(message, kind = 'info') {
+    statusEl.textContent = message;
+    statusEl.style.background = (COLORS[kind] || COLORS.info).bg;
+    statusEl.style.color = (COLORS[kind] || COLORS.info).fg;
+    statusEl.style.whiteSpace = 'pre-wrap';
+  }
+
+  function setOutput(text) {
+    outputEl.textContent = text || '(vazio)';
+  }
+
+  function busy(on) {
+    btnVersion.disabled = on;
+    btnSend.disabled = on;
+    btnVersion.style.opacity = on ? '0.55' : '1';
+    btnSend.style.opacity = on ? '0.55' : '1';
+    btnVersion.style.cursor = on ? 'wait' : 'pointer';
+    btnSend.style.cursor = on ? 'wait' : 'pointer';
+  }
+
+  function baseUrl() {
+    const value = (urlEl.value || '').trim().replace(/\/+$/, '');
+    if (!value) throw new Error('Informe a URL do serviço.');
+    if (!/^https?:\/\//i.test(value)) {
+      throw new Error('A URL precisa começar com https:// (ou http:// para teste local).');
+    }
+    return value;
+  }
+
+  function endpointFor(api, base) {
+    if (api === 'ollama-chat') return base + '/api/chat';
+    if (api === 'ollama-generate') return base + '/api/generate';
+    if (api === 'openai') return base + '/v1/chat/completions';
+    return base;
+  }
+
+  function authHeaders(includeJson) {
+    const headers = {};
+    if (includeJson) headers['Content-Type'] = 'application/json';
+    const key = (keyEl.value || '').trim();
+    if (key) headers['Authorization'] = 'Bearer ' + key;
+    return headers;
+  }
+
+  async function fetchJson(url, options, timeoutMs) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), timeoutMs);
+    const t0 = performance.now();
+    try {
+      const response = await fetch(url, Object.assign({}, options, {
+        signal: controller.signal,
+        mode: 'cors',
+        cache: 'no-store',
+        credentials: 'omit',
+      }));
+      const text = await response.text();
+      let data;
+      try { data = JSON.parse(text); } catch (_) { data = text; }
+      return { response, data, text, ms: performance.now() - t0 };
+    } finally {
+      clearTimeout(timer);
+    }
+  }
+
+  function explainError(error, url) {
+    const pageOrigin = location.protocol + '//' + location.host;
+    const pageIsHttps = location.protocol === 'https:';
+    const targetIsHttp = /^http:\/\//i.test(url);
+    const lines = [
+      'Falha: ' + (error && error.message ? error.message : String(error)),
+      '',
+      'Checklist de diagnóstico:',
+    ];
+    if (pageIsHttps && targetIsHttp) {
+      lines.push('• A página é HTTPS e a URL é HTTP: mixed content é bloqueado pelo navegador. Use HTTPS.');
+    }
+    lines.push('• O serviço está acessível a partir da rede do aluno? (campus ou VPN)');
+    lines.push('• CORS: o serviço responde Access-Control-Allow-Origin para ' + pageOrigin + '?');
+    lines.push('• POST JSON dispara preflight OPTIONS; o serviço precisa responder OPTIONS com os headers CORS.');
+    lines.push('• A URL existe? Confira /api/version, /api/tags ou /v1/models.');
+    lines.push('• “Failed to fetch” pode ser CORS, DNS, rede ou servidor fora do ar. Veja F12 → Console/Network.');
+    lines.push('• Se o GET funciona e o POST falha, o problema é quase sempre o preflight OPTIONS.');
+    lines.push('• CSP: a página do Moodle pode bloquear connect-src para outro domínio; veja o Console.');
+    return lines.join('\n');
+  }
+
+  function describeFetchError(error, url) {
+    setStatus('Não foi possível concluir a requisição.', 'err');
+    setOutput(explainError(error, url));
+  }
+
+  async function testConnection() {
+    let url = '';
+    try {
+      const base = baseUrl();
+      const api = apiEl.value;
+      if (api === 'custom') {
+        setStatus('No modo “Personalizado”, use “Enviar prompt (POST)”.', 'warn');
+        return;
+      }
+
+      url = api === 'openai' ? base + '/v1/models' : base + '/api/version';
+      busy(true);
+      setStatus('Testando GET ' + url + ' …', 'info');
+      setOutput('');
+
+      const first = await fetchJson(url, { method: 'GET', headers: authHeaders(false) }, 12000);
+      if (!first.response.ok) {
+        setStatus('GET respondeu HTTP ' + first.response.status + '.', 'err');
+        setOutput(url + '\n\n' + first.text);
+        return;
+      }
+
+      let message = 'Conexão OK: HTTP ' + first.response.status + ' em ' +
+        Math.round(first.ms) + ' ms.\n' + url;
+
+      if (api === 'openai') {
+        const ids = Array.isArray(first.data && first.data.data)
+          ? first.data.data.map((m) => m.id || m.name).filter(Boolean)
+          : [];
+        message += '\nModelos: ' + (ids.length ? ids.join(', ') : '(nenhum listado)');
+      } else {
+        message += '\nVersão do Ollama: ' + ((first.data && first.data.version) || '?');
+        const tagsUrl = base + '/api/tags';
+        const tags = await fetchJson(tagsUrl, { method: 'GET', headers: authHeaders(false) }, 12000);
+        if (tags.response.ok) {
+          const names = Array.isArray(tags.data && tags.data.models)
+            ? tags.data.models.map((m) => m.name || m.model).filter(Boolean)
+            : [];
+          message += '\nModelos: ' + (names.length ? names.join(', ') : '(nenhum listado)');
+        } else {
+          message += '\n(aviso) GET ' + tagsUrl + ' respondeu HTTP ' + tags.response.status;
+        }
+      }
+
+      setStatus(message, 'ok');
+      setOutput(JSON.stringify(first.data, null, 2));
+    } catch (error) {
+      describeFetchError(error, url);
+    } finally {
+      busy(false);
+    }
+  }
+
+  function buildBody(api, model, prompt) {
+    if (api === 'ollama-chat') {
+      return { model, messages: [{ role: 'user', content: prompt }], stream: false, think: false };
+    }
+    if (api === 'ollama-generate') {
+      return { model, prompt, stream: false, think: false };
+    }
+    if (api === 'openai') {
+      return { model, messages: [{ role: 'user', content: prompt }], stream: false };
+    }
+    return { model, prompt, messages: [{ role: 'user', content: prompt }], stream: false };
+  }
+
+  function extractAnswer(api, data) {
+    if (!data || typeof data !== 'object') return '';
+    if (api === 'ollama-chat') {
+      return (data.message && data.message.content) || data.response || '';
+    }
+    if (api === 'ollama-generate') {
+      return data.response || '';
+    }
+    if (Array.isArray(data.choices) && data.choices.length) {
+      const choice = data.choices[0];
+      return (choice.message && choice.message.content) || choice.text || '';
+    }
+    return data.response || data.content || '';
+  }
+
+  async function sendPrompt() {
+    let url = '';
+    try {
+      const base = baseUrl();
+      const api = apiEl.value;
+      const model = (modelEl.value || '').trim();
+      const prompt = (promptEl.value || '').trim();
+      if (!model) throw new Error('Informe o modelo (ex.: qwen3:14b).');
+      if (!prompt) throw new Error('Digite um prompt de teste.');
+
+      url = endpointFor(api, base);
+      busy(true);
+      setStatus('Enviando POST ' + url + ' … (o modelo pode demorar na 1ª chamada)', 'info');
+      setOutput('');
+
+      const body = buildBody(api, model, prompt);
+      const result = await fetchJson(url, {
+        method: 'POST',
+        headers: authHeaders(true),
+        body: JSON.stringify(body),
+      }, 90000);
+
+      const meta = 'HTTP ' + result.response.status + ' · ' +
+        Math.round(result.ms) + ' ms · ' + url;
+
+      if (!result.response.ok) {
+        setStatus('O serviço respondeu HTTP ' + result.response.status + '.', 'err');
+        setOutput(meta + '\n\n' + result.text);
+        return;
+      }
+
+      const answer = extractAnswer(api, result.data);
+      setStatus('Resposta recebida. ' + meta, 'ok');
+      setOutput(
+        (answer ? answer : '(resposta sem texto reconhecível)') +
+        '\n\n--- JSON bruto ---\n' +
+        (typeof result.data === 'string' ? result.data : JSON.stringify(result.data, null, 2))
+      );
+    } catch (error) {
+      describeFetchError(error, url);
+    } finally {
+      busy(false);
+    }
+  }
+
+  btnVersion.addEventListener('click', testConnection);
+  btnSend.addEventListener('click', sendPrompt);
+  btnClear.addEventListener('click', () => {
+    setStatus('Pronto. Ajuste a URL e clique em “Testar conexão”.', 'info');
+    setOutput('');
+  });
+
+  // Atalho: Ctrl+Enter envia o prompt.
+  promptEl.addEventListener('keydown', (event) => {
+    if ((event.ctrlKey || event.metaKey) && event.key === 'Enter') {
+      event.preventDefault();
+      sendPrompt();
+    }
+  });
+
+  // Aviso antecipado de mixed content.
+  if (location.protocol === 'https:' && /^http:\/\//i.test(urlEl.value)) {
+    setStatus('A página é HTTPS e a URL começa com http:// — o navegador vai bloquear. Use https://.', 'warn');
+  }
+})();
+</script>
+
+</body>
+</html>
