@@ -1,0 +1,2238 @@
+<title>Estúdio de Atividades — Máquina do Tempo</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@500;600;700&display=swap">
+<style>
+  /* Layout: estúdio em duas colunas (ajustes + prévia); no aluno, prática + tutor. */
+  :root {
+    color-scheme: light;
+    --bg: #eef2f5;
+    --surface: #ffffff;
+    --surface-2: #f6f8fa;
+    --surface-3: #e8eef3;
+    --ink: #102030;
+    --ink-2: #33495c;
+    --muted: #64798a;
+    --line: #d8e1e8;
+    --line-strong: #b9c8d4;
+    --accent: #0f766e;
+    --accent-2: #0b5f59;
+    --accent-soft: #d9f3ef;
+    --amber: #b45309;
+    --amber-soft: #fef0d8;
+    --rose: #b42318;
+    --rose-soft: #fde8e6;
+    --code-bg: #102a2a;
+    --code-fg: #d7f5ee;
+    --shadow: 0 10px 30px rgba(16, 32, 48, 0.08);
+    --radius: 16px;
+    --radius-sm: 10px;
+    --font-display: "Space Grotesk", "Segoe UI", sans-serif;
+    --font-body: "Inter", system-ui, -apple-system, sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --bg: #0b1218;
+      --surface: #111c24;
+      --surface-2: #16232c;
+      --surface-3: #1d2d38;
+      --ink: #eaf2f6;
+      --ink-2: #c4d3dd;
+      --muted: #8fa3b1;
+      --line: #263845;
+      --line-strong: #365061;
+      --accent: #2dd4bf;
+      --accent-2: #5eead4;
+      --accent-soft: #113c38;
+      --amber: #fbbf24;
+      --amber-soft: #3a2b0b;
+      --rose: #fb7185;
+      --rose-soft: #3a1520;
+      --code-bg: #081014;
+      --code-fg: #d8f3ee;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #0b1218;
+    --surface: #111c24;
+    --surface-2: #16232c;
+    --surface-3: #1d2d38;
+    --ink: #eaf2f6;
+    --ink-2: #c4d3dd;
+    --muted: #8fa3b1;
+    --line: #263845;
+    --line-strong: #365061;
+    --accent: #2dd4bf;
+    --accent-2: #5eead4;
+    --accent-soft: #113c38;
+    --amber: #fbbf24;
+    --amber-soft: #3a2b0b;
+    --rose: #fb7185;
+    --rose-soft: #3a1520;
+    --code-bg: #081014;
+    --code-fg: #d8f3ee;
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  button, input, textarea, select { font: inherit; }
+  button { cursor: pointer; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  code, pre, .mono { font-family: var(--font-mono); }
+  code {
+    background: var(--surface-3);
+    border-radius: 5px;
+    padding: 0.08em 0.32em;
+    font-size: 0.9em;
+    color: var(--ink-2);
+  }
+  [hidden] { display: none !important; }
+
+  .page { max-width: 1360px; margin: 0 auto; padding-block: 20px 56px; }
+  .topbar {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 18px;
+    padding-block: 6px 18px;
+    border-bottom: 1px solid var(--line);
+  }
+  .brand { display: flex; align-items: center; gap: 12px; min-width: 0; }
+  .brand > div { min-width: 0; }
+  .logo {
+    flex: 0 0 auto;
+    width: 46px;
+    height: 46px;
+    border-radius: 14px;
+    background: var(--ink);
+    color: var(--bg);
+    display: grid;
+    place-items: center;
+    box-shadow: 0 4px 12px rgba(16, 32, 48, 0.18);
+  }
+  .logo svg { width: 25px; height: 25px; }
+  .eyebrow {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 2px;
+  }
+  h1, h2, h3 { font-family: var(--font-display); color: var(--ink); text-wrap: balance; margin: 0; }
+  h1 { font-size: clamp(1.55rem, 3.2vw, 2.2rem); letter-spacing: -0.03em; line-height: 1.1; }
+  h2 { font-size: clamp(1.3rem, 2.4vw, 1.7rem); letter-spacing: -0.02em; line-height: 1.15; }
+  h3 { font-size: 1rem; letter-spacing: -0.01em; }
+  p { margin: 0; }
+  .subtitle { color: var(--muted); max-width: 66ch; margin-top: 4px; font-size: 0.92rem; }
+  .theme-btn {
+    flex: 0 0 auto;
+    width: 40px; height: 40px;
+    border-radius: 12px;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    color: var(--ink-2);
+    display: grid; place-items: center;
+  }
+  .theme-btn:hover { border-color: var(--line-strong); color: var(--ink); }
+  .theme-btn svg { width: 18px; height: 18px; }
+
+  .intro {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+    gap: 24px;
+    align-items: end;
+    padding-block: 26px 22px;
+  }
+  .intro h2 { font-size: clamp(1.5rem, 3vw, 2.15rem); max-width: 24ch; }
+  .intro p { color: var(--muted); max-width: 62ch; margin-top: 8px; }
+  .process { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+  .process span {
+    display: inline-flex; align-items: center; gap: 6px;
+    border: 1px solid var(--line);
+    background: var(--surface);
+    color: var(--ink-2);
+    border-radius: 999px;
+    padding: 5px 10px;
+    font-size: 0.74rem;
+    font-weight: 600;
+  }
+  .process b {
+    display: inline-grid; place-items: center;
+    width: 17px; height: 17px; border-radius: 50%;
+    background: var(--accent-soft); color: var(--accent-2);
+    font-size: 0.65rem;
+  }
+  .pillars { display: grid; gap: 8px; }
+  .pillar {
+    display: flex; gap: 10px; align-items: flex-start;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 10px 12px;
+  }
+  .pillar .dot { flex: 0 0 auto; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); margin-top: 6px; }
+  .pillar strong { display: block; font-size: 0.82rem; }
+  .pillar span { display: block; color: var(--muted); font-size: 0.76rem; line-height: 1.4; }
+
+  .tabs {
+    display: inline-flex;
+    gap: 4px;
+    padding: 4px;
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+  }
+  .tab {
+    border: 0;
+    background: transparent;
+    color: var(--muted);
+    border-radius: 999px;
+    padding: 8px 14px;
+    font-weight: 600;
+    font-size: 0.84rem;
+  }
+  .tab[aria-selected="true"] { background: var(--surface); color: var(--ink); box-shadow: 0 1px 3px rgba(16, 32, 48, 0.12); }
+  .view { padding-top: 20px; }
+
+  .studio-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 430px) minmax(0, 1fr);
+    gap: 20px;
+    align-items: start;
+  }
+  .rail { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+  .preview { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 18px;
+    min-width: 0;
+  }
+  .card--hero { box-shadow: var(--shadow); }
+  .card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+  .card-kicker {
+    display: block;
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 2px;
+  }
+  .card-head h3 { font-size: 1.02rem; }
+  .card-head p { color: var(--muted); font-size: 0.78rem; margin-top: 2px; }
+  .tag {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 3px 8px; border-radius: 999px;
+    background: var(--surface-2); border: 1px solid var(--line);
+    color: var(--muted); font-size: 0.68rem; font-weight: 700;
+    white-space: nowrap;
+  }
+  .tag--accent { background: var(--accent-soft); border-color: transparent; color: var(--accent-2); }
+  .tag--amber { background: var(--amber-soft); border-color: transparent; color: var(--amber); }
+
+  .field { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
+  .field:last-child { margin-bottom: 0; }
+  label, .label { font-size: 0.78rem; font-weight: 700; color: var(--ink-2); }
+  .hint { font-size: 0.73rem; color: var(--muted); line-height: 1.4; }
+  input[type="text"], textarea, select {
+    width: 100%;
+    border: 1px solid var(--line-strong);
+    border-radius: 10px;
+    background: var(--surface-2);
+    color: var(--ink);
+    padding: 9px 10px;
+    font-size: 0.84rem;
+  }
+  input[type="text"]:focus, textarea:focus, select:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 3px var(--accent-soft); }
+  textarea { resize: vertical; min-height: 92px; line-height: 1.45; }
+  .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+  .preset-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .preset {
+    text-align: left;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--surface-2);
+    padding: 10px 11px;
+    color: var(--ink);
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+  .preset:hover { border-color: var(--line-strong); }
+  .preset[aria-pressed="true"] {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+    box-shadow: inset 0 0 0 1px var(--accent);
+  }
+  .preset strong { display: block; font-family: var(--font-display); font-size: 0.88rem; letter-spacing: -0.01em; }
+  .preset span { display: block; color: var(--muted); font-size: 0.72rem; line-height: 1.35; margin-top: 2px; }
+  .preset .icon { display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 7px; background: var(--surface); color: var(--accent); margin-bottom: 6px; border: 1px solid var(--line); }
+  .preset .icon svg { width: 13px; height: 13px; }
+  .chapter-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+  .chapter {
+    border: 1px solid var(--line);
+    background: var(--surface-2);
+    border-radius: 10px;
+    padding: 8px 6px;
+    text-align: center;
+    color: var(--ink);
+  }
+  .chapter b { display: block; font-family: var(--font-display); font-size: 0.92rem; color: var(--accent); line-height: 1.2; }
+  .chapter span { display: block; font-size: 0.69rem; font-weight: 700; color: var(--ink-2); margin-top: 1px; }
+  .chapter[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-soft); box-shadow: inset 0 0 0 1px var(--accent); }
+  .chapter:hover { border-color: var(--line-strong); }
+
+  .toggle-row { display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; border-bottom: 1px dashed var(--line); }
+  .toggle-row:last-child { border-bottom: 0; padding-bottom: 0; }
+  .toggle-row:first-child { padding-top: 0; }
+  .switch { position: relative; display: inline-block; width: 38px; height: 22px; flex: 0 0 auto; margin-top: 1px; }
+  .switch input { opacity: 0; width: 0; height: 0; }
+  .switch .slider { position: absolute; inset: 0; background: var(--line-strong); border-radius: 999px; transition: background 0.15s ease; }
+  .switch .slider::before { content: ""; position: absolute; width: 16px; height: 16px; left: 3px; top: 3px; background: var(--surface); border-radius: 50%; transition: transform 0.15s ease; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2); }
+  .switch input:checked + .slider { background: var(--accent); }
+  .switch input:checked + .slider::before { transform: translateX(16px); }
+  .switch input:focus-visible + .slider { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .toggle-copy strong { display: block; font-size: 0.8rem; }
+  .toggle-copy span { display: block; color: var(--muted); font-size: 0.72rem; line-height: 1.35; }
+  .range-row { display: flex; align-items: center; gap: 10px; margin-top: 4px; }
+  .range-row input[type="range"] { width: 100%; accent-color: var(--accent); }
+  .range-value { flex: 0 0 auto; font-family: var(--font-mono); font-size: 0.78rem; color: var(--ink-2); min-width: 56px; text-align: right; }
+
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+    border: 1px solid var(--line-strong);
+    border-radius: 10px;
+    background: var(--surface);
+    color: var(--ink);
+    padding: 8px 12px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    line-height: 1.2;
+    text-decoration: none;
+    transition: border-color 0.15s ease, background 0.15s ease, transform 0.05s ease;
+  }
+  .btn:hover { border-color: var(--accent); }
+  .btn:active { transform: translateY(1px); }
+  .btn--primary { background: var(--accent); border-color: var(--accent); color: #ffffff; }
+  .btn--primary:hover { background: var(--accent-2); border-color: var(--accent-2); }
+  .btn--soft { background: var(--accent-soft); border-color: transparent; color: var(--accent-2); }
+  .btn--soft:hover { border-color: var(--accent); }
+  .btn--ghost { background: transparent; border-color: transparent; color: var(--muted); }
+  .btn--ghost:hover { color: var(--ink); background: var(--surface-2); }
+  .btn--small { padding: 6px 9px; font-size: 0.72rem; border-radius: 8px; }
+  .btn:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
+  .actions { display: flex; flex-wrap: wrap; gap: 8px; }
+  .actions--end { justify-content: flex-end; }
+
+  .prompt-box {
+    background: var(--code-bg);
+    color: var(--code-fg);
+    border-radius: 12px;
+    padding: 13px 14px;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    line-height: 1.62;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    max-height: 260px;
+    overflow: auto;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  .prompt-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+  .advanced { margin-top: 12px; border-top: 1px dashed var(--line); padding-top: 10px; }
+  .advanced summary { cursor: pointer; font-size: 0.78rem; font-weight: 700; color: var(--ink-2); }
+  .advanced summary:hover { color: var(--accent); }
+  .advanced .field { margin-top: 10px; }
+  .check { display: flex; align-items: center; gap: 8px; font-size: 0.78rem; color: var(--ink-2); font-weight: 600; }
+  .check input { accent-color: var(--accent); width: 16px; height: 16px; }
+
+  .preview-chat { display: flex; flex-direction: column; gap: 9px; }
+  .bubble {
+    max-width: 92%;
+    padding: 9px 11px;
+    border-radius: 14px;
+    font-size: 0.82rem;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+  }
+  .bubble--tutor { background: var(--surface-2); border: 1px solid var(--line); border-bottom-left-radius: 4px; align-self: flex-start; }
+  .bubble--student { background: var(--accent-soft); border: 1px solid transparent; border-bottom-right-radius: 4px; align-self: flex-end; }
+  .bubble-meta { display: block; font-size: 0.62rem; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 3px; }
+  .bubble code { background: rgba(16, 32, 48, 0.08); color: inherit; }
+  :root[data-theme="dark"] .bubble code { background: rgba(255, 255, 255, 0.08); }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .bubble code { background: rgba(255, 255, 255, 0.08); } }
+
+  .activity-card { display: grid; gap: 10px; }
+  .code-chip {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 7px 9px;
+    overflow-wrap: anywhere;
+  }
+  .flow-mini { display: grid; gap: 9px; margin-top: 2px; }
+  .flow-mini div { display: flex; gap: 9px; align-items: flex-start; font-size: 0.8rem; color: var(--ink-2); }
+  .flow-mini b {
+    flex: 0 0 auto;
+    width: 21px; height: 21px;
+    border-radius: 50%;
+    background: var(--accent-soft);
+    color: var(--accent-2);
+    display: grid; place-items: center;
+    font-size: 0.66rem;
+  }
+  .json-box { max-height: 260px; }
+  .student-url { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .student-url .code-chip { flex: 1 1 240px; }
+
+  .student-head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  .student-head h2 { font-size: clamp(1.35rem, 2.6vw, 1.85rem); }
+  .student-meta { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+  .student-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.12fr) minmax(0, 0.88fr);
+    gap: 18px;
+    align-items: start;
+  }
+  .practice { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+  .statement-text { white-space: pre-line; color: var(--ink-2); font-size: 0.84rem; line-height: 1.55; }
+
+  .prediction {
+    background: var(--amber-soft);
+    border: 1px solid color-mix(in srgb, var(--amber) 34%, var(--line));
+    border-radius: var(--radius);
+    padding: 15px 16px;
+  }
+  .prediction h3 { font-size: 0.98rem; }
+  .prediction p { color: var(--ink-2); font-size: 0.8rem; margin-top: 3px; }
+  .choices { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 10px; }
+  .choice {
+    border: 1px solid var(--line-strong);
+    background: var(--surface);
+    color: var(--ink);
+    border-radius: 9px;
+    padding: 7px 12px;
+    font-weight: 700;
+    font-size: 0.8rem;
+  }
+  .choice[aria-pressed="true"] { background: var(--amber); border-color: var(--amber); color: #ffffff; }
+  .prediction .hint { margin-top: 8px; }
+
+  .editor-card { padding: 0; overflow: hidden; }
+  .editor-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 10px 14px; background: var(--surface-2); border-bottom: 1px solid var(--line); }
+  .editor-head .file { display: flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 0.76rem; color: var(--ink-2); }
+  .dot-red { width: 8px; height: 8px; border-radius: 50%; background: var(--rose); display: inline-block; }
+  .editor-body { display: flex; background: var(--code-bg); color: var(--code-fg); border-bottom: 1px solid var(--line); }
+  .gutter {
+    flex: 0 0 auto;
+    padding: 13px 8px 13px 12px;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    line-height: 1.65;
+    color: color-mix(in srgb, var(--code-fg) 42%, transparent);
+    text-align: right;
+    user-select: none;
+    overflow: hidden;
+    min-width: 38px;
+    white-space: pre;
+  }
+  .editor-area { flex: 1 1 auto; min-width: 0; }
+  .editor-area textarea {
+    display: block;
+    width: 100%;
+    min-height: 178px;
+    margin: 0;
+    padding: 13px 14px 13px 8px;
+    background: transparent;
+    color: var(--code-fg);
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    resize: vertical;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    line-height: 1.65;
+    white-space: pre;
+    overflow: auto;
+    tab-size: 4;
+  }
+  .editor-area textarea:focus { outline: none; box-shadow: none; border: 0; }
+  .editor-foot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px; padding: 10px 14px; background: var(--surface); }
+  .editor-foot .hint { font-size: 0.7rem; }
+
+  .timeline-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 10px; }
+  .scrubber { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .scrubber input[type="range"] { flex: 1 1 auto; accent-color: var(--accent); }
+  .scrubber .mono { flex: 0 0 auto; font-size: 0.72rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .step-list { max-height: 210px; overflow: auto; border: 1px solid var(--line); border-radius: 12px; background: var(--surface-2); }
+  .step-row {
+    display: grid;
+    grid-template-columns: 38px 36px minmax(0, 1fr);
+    gap: 6px;
+    align-items: center;
+    width: 100%;
+    border: 0;
+    border-bottom: 1px solid var(--line);
+    background: transparent;
+    color: var(--ink);
+    text-align: left;
+    padding: 6px 9px;
+    font-size: 0.74rem;
+  }
+  .step-row:last-child { border-bottom: 0; }
+  .step-row:hover { background: var(--surface-3); }
+  .step-row.active { background: var(--accent-soft); box-shadow: inset 3px 0 0 var(--accent); }
+  .step-num { color: var(--muted); font-variant-numeric: tabular-nums; }
+  .step-line { font-family: var(--font-mono); color: var(--accent-2); font-weight: 700; }
+  .step-vars { font-family: var(--font-mono); color: var(--ink-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .vars-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(88px, 1fr)); gap: 7px; margin-top: 10px; }
+  .var { background: var(--surface-2); border: 1px solid var(--line); border-radius: 9px; padding: 7px 9px; }
+  .var span { display: block; font-size: 0.6rem; font-weight: 800; letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted); }
+  .var b { display: block; font-family: var(--font-mono); font-size: 0.8rem; color: var(--ink); overflow-wrap: anywhere; }
+  .output { background: var(--code-bg); color: var(--code-fg); border-radius: 11px; padding: 10px 12px; font-family: var(--font-mono); font-size: 0.78rem; line-height: 1.55; white-space: pre-wrap; min-height: 54px; overflow-wrap: anywhere; }
+  .output .empty { color: color-mix(in srgb, var(--code-fg) 52%, transparent); }
+  .compare { display: flex; flex-wrap: wrap; gap: 7px; align-items: center; font-size: 0.76rem; color: var(--ink-2); margin-top: 9px; }
+  .pill { display: inline-flex; align-items: center; gap: 4px; border-radius: 999px; padding: 3px 8px; font-size: 0.66rem; font-weight: 800; letter-spacing: 0.02em; }
+  .pill--good { background: var(--accent-soft); color: var(--accent-2); }
+  .pill--warn { background: var(--amber-soft); color: var(--amber); }
+  .pill--bad { background: var(--rose-soft); color: var(--rose); }
+
+  .tutor-card { position: sticky; top: 14px; display: flex; flex-direction: column; min-height: 500px; padding: 0; overflow: hidden; }
+  .tutor-head { display: flex; align-items: center; gap: 10px; padding: 13px 14px; border-bottom: 1px solid var(--line); background: var(--surface-2); }
+  .avatar { flex: 0 0 auto; width: 34px; height: 34px; border-radius: 11px; background: var(--accent); color: #ffffff; display: grid; place-items: center; }
+  .avatar svg { width: 18px; height: 18px; }
+  .tutor-head strong { display: block; font-family: var(--font-display); font-size: 0.88rem; }
+  .tutor-head span { display: block; color: var(--muted); font-size: 0.68rem; }
+  .status { margin-left: auto; display: inline-flex; align-items: center; gap: 5px; font-size: 0.64rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent-2); }
+  .status::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+  .chat { display: flex; flex-direction: column; gap: 9px; padding: 13px 14px; flex: 1 1 auto; overflow: auto; max-height: 380px; }
+  .chat-input { display: flex; gap: 7px; padding: 10px 14px 4px; border-top: 1px solid var(--line); background: var(--surface); }
+  .chat-input input { flex: 1 1 auto; min-width: 0; }
+  .chips { display: flex; flex-wrap: wrap; gap: 5px; padding: 0 14px 10px; background: var(--surface); }
+  .chip { border: 1px solid var(--line); background: var(--surface-2); color: var(--ink-2); border-radius: 999px; padding: 4px 8px; font-size: 0.68rem; }
+  .chip:hover { border-color: var(--accent); color: var(--accent-2); }
+  .sim-note { padding: 8px 14px 12px; font-size: 0.66rem; color: var(--muted); border-top: 1px dashed var(--line); background: var(--surface); line-height: 1.4; }
+  .typing { display: inline-flex; gap: 3px; align-items: center; }
+  .typing i { width: 4px; height: 4px; border-radius: 50%; background: var(--muted); animation: blink 1s infinite; }
+  .typing i:nth-child(2) { animation-delay: 0.15s; }
+  .typing i:nth-child(3) { animation-delay: 0.3s; }
+  @keyframes blink { 0%, 80%, 100% { opacity: 0.25; } 40% { opacity: 1; } }
+
+  .production { margin-top: 42px; padding-top: 26px; border-top: 1px solid var(--line); }
+  .production-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 12px; }
+  .production-head p { color: var(--muted); max-width: 68ch; margin-top: 5px; font-size: 0.86rem; }
+  .production-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-top: 16px; }
+  .production-card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 15px; }
+  .production-card .num { display: inline-grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: var(--accent-soft); color: var(--accent-2); font-size: 0.7rem; font-weight: 800; margin-bottom: 7px; }
+  .production-card h3 { font-size: 0.93rem; }
+  .production-card p { color: var(--muted); font-size: 0.78rem; margin-top: 3px; line-height: 1.45; }
+  .arch { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin-top: 16px; padding: 12px; border: 1px dashed var(--line-strong); border-radius: 12px; background: var(--surface-2); }
+  .arch-box { background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 6px 9px; font-size: 0.72rem; font-weight: 700; color: var(--ink-2); }
+  .arch-arrow { color: var(--muted); font-size: 0.8rem; }
+  .security { display: grid; grid-template-columns: 1fr 1fr; gap: 7px 18px; margin: 16px 0 0; padding: 0; list-style: none; }
+  .security li { display: flex; gap: 7px; align-items: flex-start; font-size: 0.78rem; color: var(--ink-2); }
+  .security li::before { content: "✓"; flex: 0 0 auto; color: var(--accent); font-weight: 800; }
+  .capacity { margin-top: 14px; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 15px; }
+  .capacity-head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 10px; }
+  .capacity-head h3 { font-size: 0.93rem; }
+  .capacity-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
+  .capacity-grid div { background: var(--surface-2); border: 1px solid var(--line); border-radius: 10px; padding: 9px 11px; }
+  .capacity-grid strong { display: block; font-size: 0.79rem; }
+  .capacity-grid span { display: block; color: var(--muted); font-size: 0.73rem; line-height: 1.4; margin-top: 2px; }
+  .capacity > .hint { margin-top: 9px; }
+  .mvp { margin-top: 16px; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 15px; }
+  .mvp h3 { font-size: 0.93rem; margin-bottom: 7px; }
+  .mvp ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 5px; }
+  .mvp li { font-size: 0.78rem; color: var(--ink-2); display: flex; gap: 7px; align-items: flex-start; }
+  .mvp li .box { flex: 0 0 auto; width: 14px; height: 14px; border-radius: 4px; border: 1px solid var(--line-strong); margin-top: 2px; display: grid; place-items: center; font-size: 0.6rem; color: var(--accent); }
+  .mvp li.done .box { background: var(--accent-soft); border-color: var(--accent); }
+  .footnote { margin-top: 18px; color: var(--muted); font-size: 0.72rem; line-height: 1.5; }
+
+  .toast {
+    position: fixed;
+    left: 50%;
+    bottom: calc(18px + env(safe-area-inset-bottom, 0px));
+    transform: translateX(-50%) translateY(12px);
+    max-width: min(92vw, 460px);
+    background: var(--ink);
+    color: var(--bg);
+    border-radius: 999px;
+    padding: 9px 15px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    box-shadow: 0 8px 24px rgba(16, 32, 48, 0.25);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.18s ease, transform 0.18s ease;
+    z-index: 50;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  @media (max-width: 1080px) {
+    .tutor-card { position: static; }
+  }
+  @media (max-width: 980px) {
+    .intro, .studio-grid, .student-grid { grid-template-columns: 1fr; }
+    .production-grid { grid-template-columns: 1fr; }
+    .security { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 640px) {
+    body { font-size: 14px; }
+    .row-2 { grid-template-columns: 1fr; }
+    .preset-grid { grid-template-columns: 1fr; }
+    .chapter-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .student-head { align-items: flex-start; }
+    .step-row { grid-template-columns: 32px 32px minmax(0, 1fr); }
+    .card { padding: 15px; }
+    .capacity-grid { grid-template-columns: 1fr; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+  }
+</style>
+
+<div class="page">
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="8.5"></circle>
+          <path d="M12 7.5v4.8l3 1.8"></path>
+          <path d="M4.5 12H2.2M21.8 12h-2.3"></path>
+        </svg>
+      </div>
+      <div>
+        <p class="eyebrow">Máquina do Tempo · CS2</p>
+        <h1>Estúdio de Atividades</h1>
+        <p class="subtitle" id="pageSubtitle">O professor escolhe o estilo do tutor. O sistema monta o prompt, o aluno pratica e o token fica no servidor.</p>
+      </div>
+    </div>
+    <button class="theme-btn" id="themeBtn" type="button" aria-label="Alternar tema claro e escuro" title="Alternar tema">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="4"></circle>
+        <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"></path>
+      </svg>
+    </button>
+  </header>
+
+  <section class="intro" id="intro" aria-label="Resumo">
+    <div>
+      <h2>Um exercício, um tutor. Sem escrever prompt do zero.</h2>
+      <p>Escolha um estilo, ajuste os limites e veja a prévia. O aluno recebe o enunciado e o tutor; ele nunca vê o prompt nem o token do proxy.</p>
+      <div class="process" aria-label="Fluxo">
+        <span><b>1</b> Escolha o estilo</span>
+        <span><b>2</b> Ajuste os limites</span>
+        <span><b>3</b> Veja a prévia</span>
+        <span><b>4</b> Exporte para o serviço</span>
+      </div>
+    </div>
+    <div class="pillars">
+      <div class="pillar"><span class="dot"></span><div><strong>Prompt no servidor</strong><span>O texto que define o tutor não vai para o navegador do aluno.</span></div></div>
+      <div class="pillar"><span class="dot"></span><div><strong>Sem código na resposta</strong><span>As regras e o filtro de saída barram a solução pronta.</span></div></div>
+      <div class="pillar"><span class="dot"></span><div><strong>Uma atividade por vez</strong><span>Cada exercício tem seu prompt, modelo, cota e validade.</span></div></div>
+    </div>
+  </section>
+
+  <div class="tabs" role="tablist" aria-label="Visões">
+    <button class="tab" id="tabProfessor" role="tab" aria-selected="true" aria-controls="view-professor" type="button">Professor</button>
+    <button class="tab" id="tabAluno" role="tab" aria-selected="false" aria-controls="view-aluno" type="button">Aluno · prévia</button>
+  </div>
+
+  <main>
+    <section class="view" id="view-professor" role="tabpanel" aria-labelledby="tabProfessor">
+      <div class="studio-grid">
+        <div class="rail">
+          <div class="card">
+            <div class="card-head">
+              <div><span class="card-kicker">Comece pelo capítulo</span><h3>Uma atividade por conceito</h3></div>
+              <span class="tag tag--accent">6 capítulos · 92 VPLs</span>
+            </div>
+            <div class="chapter-grid" id="chapterGrid" role="group" aria-label="Capítulos">
+              <button class="chapter" type="button" data-chapter="sequencial" aria-pressed="false"><b>1</b><span>Sequencial</span></button>
+              <button class="chapter" type="button" data-chapter="funcoes" aria-pressed="false"><b>2</b><span>Funções</span></button>
+              <button class="chapter" type="button" data-chapter="condicional" aria-pressed="false"><b>3</b><span>Condicional</span></button>
+              <button class="chapter" type="button" data-chapter="laco" aria-pressed="false"><b>4</b><span>Laço</span></button>
+              <button class="chapter" type="button" data-chapter="vetor" aria-pressed="false"><b>5</b><span>Vetor</span></button>
+              <button class="chapter" type="button" data-chapter="matriz" aria-pressed="false"><b>6</b><span>Matriz</span></button>
+            </div>
+            <p class="hint">O capítulo preenche título, enunciado, estilo e checkpoint. Você pode editar tudo depois.</p>
+          </div>
+
+          <div class="card">
+            <div class="card-head">
+              <div><span class="card-kicker">1 · Atividade</span><h3>O que o aluno vai praticar</h3></div>
+              <span class="tag tag--accent">EP4.10</span>
+            </div>
+            <div class="field">
+              <label for="title">Título da atividade</label>
+              <input id="title" type="text" value="Triângulo de 1s" autocomplete="off">
+            </div>
+            <div class="field">
+              <label for="professorName">Professor</label>
+              <input id="professorName" type="text" value="Prof. Francisco" autocomplete="off">
+            </div>
+            <div class="field">
+              <label for="codeId">Código da atividade</label>
+              <input id="codeId" type="text" value="cs2-ep4-10-triangulo" autocomplete="off" spellcheck="false">
+              <span class="hint">Vira o link do aluno: <code>/aluno?atividade=cs2-ep4-10-triangulo</code></span>
+            </div>
+            <div class="field">
+              <label for="statement">Enunciado</label>
+              <textarea id="statement" rows="4">Leia um inteiro n e desenhe um triângulo de 1s com n linhas, alinhado à direita. Para n = 3, a saída esperada é:
+--1--
+-111-
+11111</textarea>
+            </div>
+            <div class="field">
+              <label for="model">Modelo</label>
+              <select id="model">
+                <option value="qwen3:14b">qwen3:14b · narração e perguntas</option>
+                <option value="qwen2.5-coder:14b">qwen2.5-coder:14b · foco em código</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-head">
+              <div><span class="card-kicker">2 · Estilo do tutor</span><h3>Como ele deve conduzir</h3></div>
+            </div>
+            <div class="preset-grid" id="presetGrid" role="group" aria-label="Estilo do tutor">
+              <button class="preset" type="button" data-style="socratic" aria-pressed="true">
+                <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 9h8M8 13h5"></path><path d="M21 12a8.5 8.5 0 0 1-8.5 8.5H7l-4 2 1.2-4.2A8.5 8.5 0 1 1 21 12Z"></path></svg></span>
+                <strong>Socrático</strong>
+                <span>Uma pergunta por vez, sem entregar a solução.</span>
+              </button>
+              <button class="preset" type="button" data-style="levels" aria-pressed="false">
+                <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 19h4M9.5 19h5M16 19h4"></path><path d="M4 15h7M12 15h8M4 11h10M15 11h5"></path></svg></span>
+                <strong>Dicas em níveis</strong>
+                <span>Conceito → estratégia → próximo passo.</span>
+              </button>
+              <button class="preset" type="button" data-style="review" aria-pressed="false">
+                <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 12a8 8 0 1 0 2.3-5.6"></path><path d="M4 4v5h5"></path><path d="M12 8v4l2.5 1.5"></path></svg></span>
+                <strong>Revisão de erro</strong>
+                <span>Compara esperado × obtido e caça a divergência.</span>
+              </button>
+              <button class="preset" type="button" data-style="explain" aria-pressed="false">
+                <span class="icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 5h16v11H8l-4 4V5Z"></path><path d="M8 9h8M8 12h5"></path></svg></span>
+                <strong>Explicação curta</strong>
+                <span>Explica o conceito em poucas frases, sem o código.</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-head">
+              <div><span class="card-kicker">3 · Limites</span><h3>O que o tutor não faz</h3></div>
+            </div>
+            <div class="toggle-row">
+              <label class="switch"><input type="checkbox" id="noCode" checked><span class="slider"></span></label>
+              <span class="toggle-copy"><strong>Nunca mostrar código</strong><span>Sem blocos, trechos do exercício ou pseudocódigo final.</span></span>
+            </div>
+            <div class="toggle-row">
+              <label class="switch"><input type="checkbox" id="noSolution" checked><span class="slider"></span></label>
+              <span class="toggle-copy"><strong>Nunca entregar a solução</strong><span>Se o aluno pedir, o tutor recusa e devolve uma pergunta.</span></span>
+            </div>
+            <div class="toggle-row">
+              <label class="switch"><input type="checkbox" id="predict" checked><span class="slider"></span></label>
+              <span class="toggle-copy"><strong>Pedir previsão antes de revelar</strong><span>O aluno se compromete com uma hipótese antes de ver a execução.</span></span>
+            </div>
+            <div class="toggle-row">
+              <label class="switch"><input type="checkbox" id="allowPseudo"><span class="slider"></span></label>
+              <span class="toggle-copy"><strong>Permitir pseudocódigo mínimo</strong><span>Só depois de uma tentativa; nunca a solução final.</span></span>
+            </div>
+            <div class="field" style="margin-top: 12px;">
+              <label for="maxSentences">Máximo de frases por resposta</label>
+              <div class="range-row">
+                <input type="range" id="maxSentences" min="2" max="6" step="1" value="3">
+                <span class="range-value" id="maxSentencesValue">3 frases</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-head">
+              <div><span class="card-kicker">4 · Prompt gerado</span><h3>O que o modelo recebe</h3></div>
+              <span class="tag">somente servidor</span>
+            </div>
+            <pre class="prompt-box" id="promptBox" aria-live="polite"></pre>
+            <div class="prompt-actions">
+              <button class="btn btn--small" type="button" id="copyPrompt">Copiar prompt</button>
+              <button class="btn btn--small btn--ghost" type="button" id="resetPrompt">Voltar ao gerado</button>
+            </div>
+            <details class="advanced">
+              <summary>Ajuste fino do prompt (opcional)</summary>
+              <p class="hint">Para casos especiais. O prompt gerado cobre a maioria das atividades.</p>
+              <label class="check"><input type="checkbox" id="useCustom"> Usar prompt personalizado</label>
+              <div class="field">
+                <textarea id="customPrompt" rows="7" spellcheck="false" placeholder="Cole ou edite o prompt aqui. O aluno nunca vê este texto."></textarea>
+              </div>
+              <button class="btn btn--small" type="button" id="copyGenerated">Copiar prompt gerado para editar</button>
+            </details>
+          </div>
+        </div>
+
+        <div class="preview">
+          <div class="actions">
+            <button class="btn btn--primary" type="button" id="saveActivity">Salvar atividade</button>
+            <button class="btn btn--soft" type="button" id="openStudent">Abrir como aluno</button>
+            <button class="btn btn--ghost" type="button" id="restoreExample">Restaurar exemplo</button>
+          </div>
+
+          <div class="card card--hero">
+            <div class="card-head">
+              <div><span class="card-kicker">Prévia</span><h3>Como o tutor responde</h3><p>Exemplo com uma pergunta que pede o código pronto.</p></div>
+              <span class="tag tag--amber">simulado</span>
+            </div>
+            <div class="preview-chat">
+              <div class="bubble bubble--student"><span class="bubble-meta">Aluno</span>Só apareceram 2 linhas. Pode me dar o código?</div>
+              <div class="bubble bubble--tutor"><span class="bubble-meta">Tutor · <span id="previewStyleName">Socrático</span></span><span id="previewReply">Não vou entregar o código pronto. Vamos por partes: o que o <code>range</code> está gerando? E o que mudaria se você incluísse o n?</span></div>
+            </div>
+            <div class="actions" style="margin-top: 12px;">
+              <button class="btn btn--small" type="button" id="previewAnother">Trocar pergunta</button>
+              <button class="btn btn--small btn--ghost" type="button" id="openStudent2">Testar como aluno</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-head">
+              <div><span class="card-kicker">Cartão da atividade</span><h3>O que vai para o serviço</h3></div>
+            </div>
+            <div class="activity-card">
+              <div>
+                <span class="label">Código</span>
+                <code class="code-chip" id="activityCodeChip">cs2-ep4-10-triangulo</code>
+              </div>
+              <div>
+                <span class="label">Link do aluno (produção)</span>
+                <div class="student-url">
+                  <code class="code-chip" id="studentUrlChip">https://vision.ufabc.edu.br/tutor/aluno?atividade=cs2-ep4-10-triangulo</code>
+                  <button class="btn btn--small" type="button" id="copyStudentUrl">Copiar</button>
+                </div>
+              </div>
+              <div class="actions">
+                <button class="btn btn--small" type="button" id="copyJson">Copiar JSON da atividade</button>
+                <button class="btn btn--small btn--ghost" type="button" id="toggleJson">Ver JSON</button>
+              </div>
+              <pre class="prompt-box json-box" id="jsonBox" hidden></pre>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-head">
+              <div><span class="card-kicker">Como o prompt é montado</span><h3>Presets + limites + enunciado</h3></div>
+            </div>
+            <div class="flow-mini">
+              <div><b>1</b><span>O <strong>enunciado</strong> entra como contexto da atividade.</span></div>
+              <div><b>2</b><span>As <strong>regras fixas</strong> proíbem solução, código e invenção; a timeline é a fonte de verdade.</span></div>
+              <div><b>3</b><span>O <strong>estilo</strong> escolhido define o tom: pergunta, níveis, revisão ou explicação.</span></div>
+              <div><b>4</b><span>Os <strong>limites</strong> ajustam frases, pseudocódigo e previsão.</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="view" id="view-aluno" role="tabpanel" aria-labelledby="tabAluno" hidden>
+      <div class="student-head">
+        <div>
+          <p class="eyebrow">Aluno · prévia interativa</p>
+          <h2 id="studentTitle">Triângulo de 1s</h2>
+          <div class="student-meta">
+            <span class="tag tag--accent" id="studentStyleTag">Tutor socrático</span>
+            <span class="tag" id="studentProfessorTag">Prof. Francisco</span>
+            <span class="tag" id="studentModelTag">qwen3:14b</span>
+            <span class="tag" data-student-input>n = 3</span>
+          </div>
+        </div>
+        <button class="btn btn--ghost" type="button" id="backToProfessor">Voltar ao estúdio</button>
+      </div>
+
+      <div class="student-grid">
+        <div class="practice">
+          <div class="card">
+            <div class="card-head">
+              <div><span class="card-kicker">Enunciado</span><h3>O que o programa deve fazer</h3></div>
+              <span class="tag" data-student-input>n = 3</span>
+            </div>
+            <p class="statement-text" id="studentFullStatement">Leia um inteiro n e desenhe um triângulo de 1s com n linhas, alinhado à direita. Para n = 3, a saída esperada é:
+--1--
+-111-
+11111</p>
+          </div>
+
+          <div class="prediction" id="predictionCard">
+            <h3 id="predictionQuestion">Antes de executar: quantas linhas você espera?</h3>
+            <div class="choices" id="predictionChoices" role="group" aria-label="Previsão"></div>
+            <p class="hint">A previsão é o ponto de partida. O tutor usa a sua hipótese para perguntar, não para entregar a resposta.</p>
+          </div>
+
+          <div class="card editor-card">
+            <div class="editor-head">
+              <span class="file"><span class="dot-red" aria-hidden="true"></span> exercicio.py</span>
+              <span class="tag">Python</span>
+            </div>
+            <div class="editor-body">
+              <div class="gutter" id="gutter" aria-hidden="true">1
+2
+3
+4</div>
+              <div class="editor-area">
+                <textarea id="codeEditor" spellcheck="false" aria-label="Código do aluno">n = int(input())
+for i in range(1, n):
+    linhas = "-" * (n - i) + "1" * (2 * i - 1) + "-" * (n - i)
+    print(linhas)</textarea>
+              </div>
+            </div>
+            <div class="editor-foot">
+              <div class="actions">
+                <button class="btn btn--primary" type="button" id="runBtn">Executar</button>
+                <button class="btn btn--small" type="button" id="restoreCode">Restaurar exemplo</button>
+              </div>
+              <span class="hint" id="editorHint">Prévia didática com n = 3. A execução real usa o tracer/Pyodide.</span>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-head">
+              <div><span class="card-kicker">Linha do tempo</span><h3>O que o interpretador fez</h3></div>
+              <span class="tag" id="stepCounter">passo 1 de 8</span>
+            </div>
+            <div class="scrubber">
+              <input type="range" id="stepSlider" min="0" max="7" value="0" aria-label="Passo da linha do tempo">
+              <span class="mono" id="stepSliderLabel">0 / 7</span>
+            </div>
+            <div class="step-list" id="stepList" role="list" aria-label="Passos da execução"></div>
+            <div class="vars-grid" id="varsGrid" aria-live="polite"></div>
+            <div style="margin-top: 10px;">
+              <span class="label">Saída até aqui</span>
+              <div class="output" id="outputBox"><span class="empty">(sem saída ainda)</span></div>
+            </div>
+            <div class="compare" id="compareBox" hidden></div>
+          </div>
+        </div>
+
+        <aside class="card tutor-card" aria-label="Tutor">
+          <div class="tutor-head">
+            <div class="avatar" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"></path>
+                <circle cx="12" cy="12" r="3.5"></circle>
+              </svg>
+            </div>
+            <div><strong id="tutorName">Tutor socrático</strong><span id="tutorSubtitle">qwen3:14b · prompt do professor</span></div>
+            <span class="status">prévia</span>
+          </div>
+          <div class="chat" id="chat" aria-live="polite"></div>
+          <div class="chat-input">
+            <input type="text" id="chatInput" placeholder="Escreva sua resposta ou dúvida…" aria-label="Mensagem para o tutor" autocomplete="off">
+            <button class="btn btn--primary" type="button" id="sendBtn">Enviar</button>
+          </div>
+          <div class="chips" id="quickChips" aria-label="Perguntas rápidas"></div>
+          <div class="sim-note">Prévia sem IA real. No serviço, esta conversa usa o prompt do professor e o token de serviço no servidor; o aluno não vê nenhum dos dois.</div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="production" id="production" aria-label="Como vira produção">
+      <div class="production-head">
+        <div>
+          <p class="eyebrow">Do estúdio para a sala</p>
+          <h2>Como isso vira produção</h2>
+          <p>O professor não mexe em servidor. O estúdio gera a configuração; o serviço no vision aplica o prompt e guarda o token.</p>
+        </div>
+        <span class="tag tag--accent">MVP em 5 passos</span>
+      </div>
+      <div class="production-grid">
+        <div class="production-card">
+          <span class="num">1</span>
+          <h3>Professor monta</h3>
+          <p>Escolhe o estilo, ajusta os limites e exporta o JSON da atividade. O prompt é gerado automaticamente.</p>
+        </div>
+        <div class="production-card">
+          <span class="num">2</span>
+          <h3>Admin publica</h3>
+          <p>Coloca o JSON em <code>activities/&lt;id&gt;.json</code> no vision. O serviço lê o prompt no servidor, nunca no navegador.</p>
+        </div>
+        <div class="production-card">
+          <span class="num">3</span>
+          <h3>Aluno pratica</h3>
+          <p>Abre o link da atividade. O serviço chama o proxy com o token de serviço; o aluno recebe só a resposta.</p>
+        </div>
+      </div>
+      <div class="capacity">
+        <div class="capacity-head">
+          <span class="tag tag--amber">Capacidade</span>
+          <h3>E com centenas de alunos ao mesmo tempo?</h3>
+        </div>
+        <div class="capacity-grid">
+          <div><strong>Timeline no navegador</strong><span>O Pyodide executa no computador do aluno; a timeline não consome a GPU.</span></div>
+          <div><strong>IA em checkpoints</strong><span>O aluno não conversa a cada tecla; a IA entra quando ele pede ou no checkpoint.</span></div>
+          <div><strong>Fila com limite</strong><span>2–4 requisições simultâneas por GPU; o resto espera com posição ou usa dica pronta.</span></div>
+          <div><strong>Degradação graciosa</strong><span>Se a fila enche, a timeline e as dicas pré-escritas continuam; a IA volta depois.</span></div>
+        </div>
+        <p class="hint">Para 100–200 alunos: 1–2 GPUs + cache + dicas pré-escritas. Para 500+: vários nós de inferência (FILÉ) e modelos menores para dicas curtas.</p>
+      </div>
+      <div class="arch" aria-label="Arquitetura">
+        <span class="arch-box">Estúdio</span><span class="arch-arrow">→</span>
+        <span class="arch-box">activities.json</span><span class="arch-arrow">→</span>
+        <span class="arch-box">Serviço do tutor · vision</span><span class="arch-arrow">→</span>
+        <span class="arch-box">Proxy 127.0.0.1:8081</span><span class="arch-arrow">→</span>
+        <span class="arch-box">Ollama · guiou-Dell</span>
+      </div>
+      <ul class="security">
+        <li>Prompt e token nunca vão ao navegador do aluno.</li>
+        <li>Token de serviço em arquivo 0640 no vision.</li>
+        <li>Filtro de saída bloqueia código e solução.</li>
+        <li>Cota e validade por atividade no serviço.</li>
+        <li>LTI/SSO identifica o aluno no próximo passo.</li>
+        <li>Logs sem prompt nem código do aluno (LGPD).</li>
+      </ul>
+      <div class="mvp">
+        <h3>O que já existe e o que falta</h3>
+        <ul>
+          <li class="done"><span class="box">✓</span><span>Estúdio com presets, prompt gerado e cartão da atividade.</span></li>
+          <li class="done"><span class="box">✓</span><span>Proxy com tokens por professor e teste local (17 testes).</span></li>
+          <li><span class="box"></span><span>Serviço de chat por atividade no vision (FastAPI ou stdlib).</span></li>
+          <li><span class="box"></span><span>Fila/limite de concorrência + dicas pré-escritas + cache.</span></li>
+          <li><span class="box"></span><span>Filtro de saída + testes de prompt injection.</span></li>
+          <li><span class="box"></span><span>Teste de carga com 100–200 alunos simulados.</span></li>
+          <li><span class="box"></span><span>LTI/SSO e timeline Pyodide integrada.</span></li>
+        </ul>
+      </div>
+      <p class="footnote">Esta página é uma prévia de produto: o prompt e a conversa são gerados no navegador para o professor ver o comportamento. A versão de produção move o prompt para o servidor e usa o token de serviço do proxy.</p>
+    </section>
+  </main>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(() => {
+  "use strict";
+
+  const PRESETS = {
+    socratic: {
+      label: "Socrático",
+      rules: [
+        "Conduza o aluno com perguntas. Faça uma pergunta por vez e espere a resposta.",
+        "Se o aluno pedir a resposta ou o código, recuse e proponha uma pergunta que o ajude a descobrir.",
+        "Relacione cada pergunta à linha do tempo real da execução."
+      ],
+      opening: "Antes de rodar, me conta: quantas linhas você espera que apareçam para n = 3? E por quê?",
+      afterRun: (pred, actual) => `Você esperava ${pred} linha(s) e apareceram ${actual}. Onde o laço parou? Olhe o último valor de i na timeline e me diga o que ele mostra.`,
+      hint: "Olhe a linha 2: `range(1, n)`. O `range` inclui o segundo argumento? Faça um teste mental com n = 3: quais valores ele gera?",
+      codeRefusal: "Não vou entregar o código pronto. Vamos por partes: o que o `range` está gerando? E o que mudaria se você incluísse o n?",
+      fallback: "Vamos investigar juntos. O que a timeline mostra no último passo? Compare o valor de i com o número de linhas que você esperava."
+    },
+    levels: {
+      label: "Dicas em níveis",
+      rules: [
+        "Dê dicas em três níveis: (1) conceito, (2) estratégia, (3) próximo passo concreto.",
+        "Comece pelo nível 1 e só avance quando o aluno pedir ou depois de uma tentativa.",
+        "Nunca pule para o nível 3 nem entregue o código."
+      ],
+      opening: "Vamos em níveis. Sem rodar: quantas linhas o enunciado pede para n = 3? Depois comparamos com a execução.",
+      afterRun: (pred, actual) => `Nível 1 (conceito): o número de iterações depende do limite do \`range\`. Você previu ${pred}; saíram ${actual}. Quer a dica 2?`,
+      hints: [
+        "Nível 1 (conceito): `range(início, fim)` não inclui o `fim`.",
+        "Nível 2 (estratégia): compare o último `i` da timeline com o número de linhas esperado.",
+        "Nível 3 (próximo passo): teste mentalmente `range(1, 3)` e `range(1, 4)`; o que muda?"
+      ],
+      codeRefusal: "Ainda não vou dar o código. Qual é a diferença entre o último `i` da timeline e o número de linhas que o enunciado pede?",
+      fallback: "Vamos por níveis. Primeiro, qual é o conceito por trás do `range`? Se quiser, peça a próxima dica."
+    },
+    review: {
+      label: "Revisão de erro",
+      rules: [
+        "Peça ao aluno para comparar a saída esperada com a obtida antes de qualquer explicação.",
+        "Ajude a localizar a primeira linha ou iteração em que a execução divergiu do esperado.",
+        "Não entregue a correção; conduza a uma hipótese testável."
+      ],
+      opening: "Rode o código e compare a saída com o enunciado. O que deveria aparecer para n = 3? O que apareceu?",
+      afterRun: (pred, actual) => `Sua previsão era ${pred}; a execução mostrou ${actual}. Em qual passo da timeline a saída começa a divergir do esperado?`,
+      hint: "Compare a última linha da timeline com a condição do `for`. O laço executou para i = 3? Por quê?",
+      codeRefusal: "Não vou corrigir por você. Qual é a primeira diferença entre a saída esperada e a obtida?",
+      fallback: "Vamos revisar o erro: o que você esperava, o que aconteceu e onde a execução se desviou?"
+    },
+    explain: {
+      label: "Explicação curta",
+      rules: [
+        "Explique o conceito em no máximo N frases, com um exemplo mínimo diferente do exercício.",
+        "Não mostre o código do exercício nem a correção; termine com uma pergunta de verificação."
+      ],
+      opening: "O enunciado pede 3 linhas para n = 3. Antes de rodar, quanto você espera que este laço faça?",
+      afterRun: (pred, actual) => `O \`range(1, n)\` gera de 1 até n-1. Com n = 3, o laço faz 2 iterações; por isso saíram ${actual} linhas em vez de ${pred}. O que você mudaria para incluir o 3?`,
+      hint: "O `range` tem limite exclusivo: `range(1, 3)` gera 1 e 2. Para incluir o 3, o limite precisa ser 4 (ou n + 1).",
+      codeRefusal: "Não vou dar o código; a ideia é você aplicar o conceito. O que `range(1, n)` gera quando n = 3?",
+      fallback: "Em resumo: `range(1, n)` exclui o n. Como isso aparece na timeline?"
+    }
+  };
+
+  const SAMPLE_CODE = 'n = int(input())\nfor i in range(1, n):\n    linhas = "-" * (n - i) + "1" * (2 * i - 1) + "-" * (n - i)\n    print(linhas)';
+
+  const TRIANGLE_PREVIEW = {
+    kind: "triangle",
+    input: "n = 3",
+    code: SAMPLE_CODE,
+    vars: ["n", "i", "linhas"],
+    predict: {
+      question: "Antes de executar: quantas linhas você espera?",
+      options: [
+        { value: 2, label: "2 linhas" },
+        { value: 3, label: "3 linhas" },
+        { value: 4, label: "4 linhas" }
+      ]
+    },
+    hint: "Prévia didática com n = 3. A execução real usa o tracer/Pyodide.",
+    ask: "Só apareceram 2 linhas. Pode me dar o código?",
+    askHint: "Por que o range não pega o 3?",
+    chips: [
+      { text: "Por que só 2 linhas?", message: "Por que só apareceram 2 linhas?" },
+      { text: "O que é range?", message: "O que o range está gerando?" },
+      { text: "Pedir dica", message: "Pode me dar uma dica?" }
+    ]
+  };
+
+  const CHAPTERS = {
+    sequencial: {
+      label: "Sequencial",
+      title: "EP1.1 · Celsius para Fahrenheit",
+      codeId: "pi-2026-ep1-1-celsius",
+      style: "socratic",
+      statement: "Converta 65 °C para Fahrenheit com F = C * 9/5 + 32.\nSaída esperada: 65 graus Celsius corresponde a 149.0 graus Fahrenheit\nConceito: entrada, cálculo e saída em sequência, sem decisões nem laços.",
+      checkpoint: "Qual é a ordem das operações? O que entra, o que é calculado e o que sai?",
+      preview: {
+        kind: "static",
+        input: "C = 65",
+        code: [
+          "c = int(input())",
+          "f = round(c * 9 / (5 + 32), 1)",
+          'print(f"{c} graus Celsius corresponde a {f} graus Fahrenheit")'
+        ].join("\n"),
+        vars: ["c", "f"],
+        predict: {
+          question: "O programa imprime qual valor de F para C = 65?",
+          options: ["149.0", "15.8", "97.0"]
+        },
+        result: "15.8",
+        hint: "Prévia didática do exemplo: a timeline acompanha este código. A execução real do seu código virá do Pyodide/tracer.",
+        ask: "Por que apareceu 15.8 se eu esperava 149.0? Pode me dar o código?",
+        askHint: "Por que a ordem das operações mudou o resultado?",
+        chips: [
+          { text: "Por que 15.8?", message: "Por que apareceu 15.8?" },
+          { text: "Pedir dica", message: "Pode me dar uma dica?" },
+          { text: "O que comparar?", message: "O que devo comparar na timeline?" }
+        ],
+        steps: [
+          { line: 1, vars: { c: "65" }, note: "lê C" },
+          { line: 2, vars: { c: "65", f: "15.8" }, note: "calcula F" },
+          { line: 3, vars: { c: "65", f: "15.8" }, out: "65 graus Celsius corresponde a 15.8 graus Fahrenheit", note: "print" }
+        ],
+        tutor: {
+          opening: "Antes de rodar: o que a linha 2 calcula primeiro? O que entra, o que é calculado e o que sai?",
+          codeRefusal: "Não vou entregar o código pronto. Olhe a linha 2: o que deveria ser calculado primeiro, `9 / 5` ou `5 + 32`?",
+          hint: "Na linha 2, os parênteses mudam a ordem: `(5 + 32)` é somado antes da divisão. Compare com `9 / 5 + 32`.",
+          fallback: "Vamos por partes: qual é o valor de `c` na timeline? E o que a linha 2 fez com ele?",
+          afterRun: (pred, actual) => `Você previu ${pred}; a saída foi ${actual}. O enunciado espera 149.0. Onde a conta se desviou?`
+        }
+      }
+    },
+    funcoes: {
+      label: "Funções",
+      title: "EP2.1 · Função Delta",
+      codeId: "pi-2026-ep2-1-delta",
+      style: "socratic",
+      statement: "Implemente a função delta(a, b, c) que retorna b² - 4ac.\nExemplo: delta(5, -2, 4) = 4 - 4·5·4 = -76.\nConceito: a função recebe parâmetros e devolve um resultado; o programa principal chama a função.",
+      checkpoint: "O que a função recebe? O que ela devolve? Quem chama a função?",
+      preview: {
+        kind: "static",
+        input: "delta(5, -2, 4)",
+        code: [
+          "def delta(a, b, c):",
+          "    return b * 2 - 4 * a * c",
+          "",
+          "resultado = delta(5, -2, 4)",
+          "print(resultado)"
+        ].join("\n"),
+        vars: ["a", "b", "c", "resultado"],
+        predict: {
+          question: "O programa imprime qual valor?",
+          options: ["-76", "-84", "76"]
+        },
+        result: "-84",
+        hint: "Prévia didática do exemplo: a timeline acompanha este código. A execução real do seu código virá do Pyodide/tracer.",
+        ask: "Deu -84, mas o exemplo era -76. Pode me dar o código?",
+        askHint: "Qual é a diferença entre b * 2 e b ** 2?",
+        chips: [
+          { text: "Por que -84?", message: "Por que deu -84?" },
+          { text: "Pedir dica", message: "Pode me dar uma dica?" },
+          { text: "O que a função devolve?", message: "O que a função devolve?" }
+        ],
+        steps: [
+          { line: 4, vars: {}, note: "chama delta(5, -2, 4)" },
+          { line: 1, vars: { a: "5", b: "-2", c: "4" }, note: "entra na função" },
+          { line: 2, vars: { a: "5", b: "-2", c: "4", retorno: "-84" }, note: "b * 2 - 4ac" },
+          { line: 4, vars: { resultado: "-84" }, note: "recebe o retorno" },
+          { line: 5, vars: { resultado: "-84" }, out: "-84", note: "print" }
+        ],
+        tutor: {
+          opening: "Antes de rodar: o que a função recebe, o que ela devolve e quem a chama?",
+          codeRefusal: "Não vou entregar o código pronto. Olhe a linha 2: `b * 2` é o mesmo que `b ** 2`?",
+          hint: "`b ** 2` eleva b ao quadrado; `b * 2` só dobra o valor. Com b = -2, compare os dois resultados.",
+          fallback: "A timeline mostra os parâmetros e o retorno. O que a linha 2 devolveu? Confere com o enunciado?",
+          afterRun: (pred, actual) => `Você previu ${pred}; a saída foi ${actual}. O enunciado espera -76. Quem chamou a função e com quais argumentos?`
+        }
+      }
+    },
+    condicional: {
+      label: "Condicional",
+      title: "EP3.5 · Classificação de Temperatura",
+      codeId: "pi-2026-ep3-5-temperatura",
+      style: "review",
+      statement: "Leia uma temperatura T e classifique nas faixas da atividade: Muito Baixa, Baixa, Normal ou Muito Alta.\nExemplos: -25 → Muito Baixa; 10 → Baixa; 150.5 → Normal; 300 → Muito Alta.\nConceito: if/elif/else e a ordem das condições.",
+      checkpoint: "O que acontece se as condições forem testadas em outra ordem?",
+      preview: {
+        kind: "static",
+        input: "T = -25",
+        code: [
+          "t = float(input())",
+          "if t < 50:",
+          '    print("Baixa")',
+          "elif t < 0:",
+          '    print("Muito Baixa")',
+          "elif t < 250:",
+          '    print("Normal")',
+          "else:",
+          '    print("Muito Alta")'
+        ].join("\n"),
+        vars: ["t"],
+        predict: {
+          question: "O que o programa imprime para T = -25?",
+          options: ["Muito Baixa", "Baixa", "Normal"]
+        },
+        result: "Baixa",
+        hint: "Prévia didática do exemplo: a timeline acompanha este código. A execução real do seu código virá do Pyodide/tracer.",
+        ask: "Para -25 apareceu Baixa, mas o enunciado diz Muito Baixa. Pode me dar o código?",
+        askHint: "Por que a ordem dos ifs importa?",
+        chips: [
+          { text: "Por que caiu em Baixa?", message: "Por que -25 caiu em Baixa?" },
+          { text: "Pedir dica", message: "Pode me dar uma dica?" },
+          { text: "Qual condição vem primeiro?", message: "Qual condição vem primeiro?" }
+        ],
+        steps: [
+          { line: 1, vars: { t: "-25.0" }, note: "lê T" },
+          { line: 2, vars: { t: "-25.0" }, note: "t < 50? sim" },
+          { line: 3, vars: { t: "-25.0" }, out: "Baixa", note: "print" }
+        ],
+        tutor: {
+          opening: "Antes de rodar: qual faixa deveria pegar T = -25? E o que acontece se as condições forem testadas em outra ordem?",
+          codeRefusal: "Não vou dar o código. Antes de olhar as linhas, me diga: qual faixa deveria pegar -25?",
+          hint: "O `if` testa as condições na ordem. Se `t < 50` é verdadeiro para -25, as linhas seguintes são testadas?",
+          fallback: "A timeline mostra qual condição foi verdadeira. Qual linha decidiu a saída?",
+          afterRun: (pred, actual) => `Você previu ${pred}; a saída foi ${actual}. O enunciado diz que -25 é Muito Baixa. Qual condição deveria vir primeiro?`
+        }
+      }
+    },
+    laco: {
+      label: "Laço",
+      title: "EP4.1 · Cálculo de Somatório",
+      codeId: "pi-2026-ep4-1-somatorio",
+      style: "socratic",
+      statement: "Implemente a função obter_valor_funcao(a, b, c) que retorna:\na + soma de d = 1 até b de (c · d).\nSem input/print: apenas a função. Exemplo: a=1, b=3, c=2 → 1 + (2+4+6) = 13.\nConceito: laço com acumulador, limite b e variável d.",
+      checkpoint: "Quantas vezes o laço roda para b = 3? Qual é o valor de d na última iteração?",
+      preview: {
+        kind: "static",
+        input: "a=1, b=3, c=2",
+        code: [
+          "def obter_valor_funcao(a, b, c):",
+          "    soma = a",
+          "    for d in range(1, b):",
+          "        soma = soma + c * d",
+          "    return soma",
+          "",
+          "print(obter_valor_funcao(1, 3, 2))"
+        ].join("\n"),
+        vars: ["a", "b", "c", "d", "soma"],
+        predict: {
+          question: "O programa imprime qual valor?",
+          options: ["13", "7", "12"]
+        },
+        result: "7",
+        hint: "Prévia didática do exemplo: a timeline acompanha este código. A execução real do seu código virá do Pyodide/tracer.",
+        ask: "A soma deu 7, mas o exemplo era 13. Pode me dar o código?",
+        askHint: "Por que o range não pega o b?",
+        chips: [
+          { text: "Por que a soma deu 7?", message: "Por que a soma deu 7?" },
+          { text: "Pedir dica", message: "Pode me dar uma dica?" },
+          { text: "O que o range gerou?", message: "O que o range está gerando?" }
+        ],
+        steps: [
+          { line: 7, vars: {}, note: "chama obter_valor_funcao(1, 3, 2)" },
+          { line: 1, vars: { a: "1", b: "3", c: "2" }, note: "entra na função" },
+          { line: 2, vars: { a: "1", b: "3", c: "2", soma: "1" }, note: "soma = a" },
+          { line: 3, vars: { a: "1", b: "3", c: "2", soma: "1", d: "1" }, note: "range(1, 3) gera 1 e 2" },
+          { line: 4, vars: { a: "1", b: "3", c: "2", d: "1", soma: "3" }, note: "soma = 1 + 2" },
+          { line: 3, vars: { a: "1", b: "3", c: "2", soma: "3", d: "2" }, note: "próximo d" },
+          { line: 4, vars: { a: "1", b: "3", c: "2", d: "2", soma: "7" }, note: "soma = 3 + 4" },
+          { line: 3, vars: { a: "1", b: "3", c: "2", soma: "7", d: "3" }, note: "fim do laço (b não entra)" },
+          { line: 5, vars: { a: "1", b: "3", c: "2", soma: "7" }, note: "return soma" },
+          { line: 7, vars: { soma: "7" }, out: "7", note: "print do retorno" }
+        ],
+        tutor: {
+          opening: "Antes de rodar: quantas vezes o laço roda para b = 3? Qual é o valor de d na última iteração?",
+          codeRefusal: "Não vou entregar a correção. Olhe o `range(1, b)` na linha 3: o b entra no laço?",
+          hint: "`range(1, b)` vai de 1 até b-1. Para b = 3, quais valores de d aparecem na timeline?",
+          fallback: "Compare a soma da timeline com a fórmula do enunciado. Qual termo da soma está faltando?",
+          afterRun: (pred, actual) => `Você previu ${pred}; a saída foi ${actual}. O enunciado espera 13. Qual valor de d a timeline não mostrou?`
+        }
+      }
+    },
+    vetor: {
+      label: "Vetor",
+      title: "EP5.1 · Maior Elemento em Vetor",
+      codeId: "pi-2026-ep5-1-maior-vetor",
+      style: "levels",
+      statement: "Leia n e n inteiros; imprima o maior valor.\nExemplo: 5 / 10 25 8 40 12 → 40.\nConceito: percorrer o vetor mantendo o maior valor; cuidado com o valor inicial e os limites.",
+      checkpoint: "Por que começar o maior com o primeiro elemento, e não com 0?",
+      preview: {
+        kind: "static",
+        input: "V = [10, 25, 8, 40, 12]",
+        code: [
+          "n = int(input())",
+          "v = []",
+          "for i in range(n):",
+          "    v.append(int(input()))",
+          "maior = v[0]",
+          "for i in range(1, n):",
+          "    if v[i] < maior:",
+          "        maior = v[i]",
+          "print(maior)"
+        ].join("\n"),
+        vars: ["v", "i", "maior"],
+        predict: {
+          question: "O programa imprime qual valor?",
+          options: ["40", "8", "12"]
+        },
+        result: "8",
+        hint: "Prévia didática do exemplo: a timeline acompanha este código. A execução real do seu código virá do Pyodide/tracer.",
+        ask: "O maior deveria ser 40, mas apareceu 8. Pode me dar o código?",
+        askHint: "O que a comparação < está guardando?",
+        chips: [
+          { text: "Por que apareceu 8?", message: "Por que apareceu 8?" },
+          { text: "Pedir dica", message: "Pode me dar uma dica?" },
+          { text: "O que a comparação faz?", message: "O que a comparação faz?" }
+        ],
+        steps: [
+          { line: 1, vars: { n: "5" }, note: "lê n" },
+          { line: 4, vars: { n: "5", v: "[10, 25, 8, 40, 12]" }, note: "lê os 5 elementos" },
+          { line: 5, vars: { n: "5", v: "[10, 25, 8, 40, 12]", maior: "10" }, note: "maior = primeiro elemento" },
+          { line: 6, vars: { n: "5", v: "[10, 25, 8, 40, 12]", maior: "10", i: "1" }, note: "i = 1" },
+          { line: 7, vars: { n: "5", v: "[10, 25, 8, 40, 12]", maior: "10", i: "1" }, note: "25 < 10? não" },
+          { line: 6, vars: { n: "5", v: "[10, 25, 8, 40, 12]", maior: "10", i: "2" }, note: "i = 2" },
+          { line: 7, vars: { n: "5", v: "[10, 25, 8, 40, 12]", maior: "10", i: "2" }, note: "8 < 10? sim" },
+          { line: 8, vars: { n: "5", v: "[10, 25, 8, 40, 12]", maior: "8", i: "2" }, note: "maior = 8" },
+          { line: 6, vars: { n: "5", v: "[10, 25, 8, 40, 12]", maior: "8", i: "3" }, note: "i = 3" },
+          { line: 7, vars: { n: "5", v: "[10, 25, 8, 40, 12]", maior: "8", i: "3" }, note: "40 < 8? não" },
+          { line: 6, vars: { n: "5", v: "[10, 25, 8, 40, 12]", maior: "8", i: "4" }, note: "i = 4" },
+          { line: 7, vars: { n: "5", v: "[10, 25, 8, 40, 12]", maior: "8", i: "4" }, note: "12 < 8? não" },
+          { line: 6, vars: { n: "5", v: "[10, 25, 8, 40, 12]", maior: "8", i: "5" }, note: "fim do laço" },
+          { line: 9, vars: { n: "5", v: "[10, 25, 8, 40, 12]", maior: "8" }, out: "8", note: "print" }
+        ],
+        tutor: {
+          opening: "Antes de rodar: por que começar o maior com o primeiro elemento, e não com 0?",
+          codeRefusal: "Não vou entregar o código. Compare o valor de `maior` na timeline com os elementos do vetor: o que a comparação está guardando?",
+          hint: "A linha 7 usa `<` e não `>`. Com `maior = 10`, o que acontece quando encontra 8?",
+          fallback: "A timeline mostra cada comparação. Em qual elemento o valor de `maior` mudou? Ele deveria mudar?",
+          afterRun: (pred, actual) => `Você previu ${pred}; a saída foi ${actual}. O enunciado espera 40. O que a condição da linha 7 fez com o 40?`
+        }
+      }
+    },
+    matriz: {
+      label: "Matriz",
+      title: "EP6.1 · Busca em Matriz Bidimensional",
+      codeId: "pi-2026-ep6-1-busca-matriz",
+      style: "socratic",
+      statement: "Leia L, C, os L×C elementos e um valor de busca. Imprima a linha e a coluna (base 1) ou -1.\nConceito: laços aninhados, índices base 0 no código e base 1 na saída.",
+      checkpoint: "Quantas vezes o laço interno roda para cada linha? Como converter índice 0 para posição 1?",
+      preview: {
+        kind: "static",
+        input: "m = [[1, 2], [3, 4]], busca = 4",
+        code: [
+          "L = int(input())",
+          "C = int(input())",
+          "m = []",
+          "for i in range(L):",
+          "    linha = []",
+          "    for j in range(C):",
+          "        linha.append(int(input()))",
+          "    m.append(linha)",
+          "busca = int(input())",
+          "achou = False",
+          "for i in range(L):",
+          "    for j in range(C):",
+          "        if m[i][j] == busca:",
+          "            print(i, j)",
+          "            achou = True",
+          "if not achou:",
+          "    print(-1)"
+        ].join("\n"),
+        vars: ["i", "j", "busca", "achou"],
+        predict: {
+          question: "O que o programa imprime para a busca de 4?",
+          options: ["2 2", "1 1", "-1"]
+        },
+        result: "1 1",
+        hint: "Prévia didática do exemplo: a timeline acompanha este código. A execução real do seu código virá do Pyodide/tracer.",
+        ask: "A busca do 4 apareceu como 1 1, não 2 2. Pode me dar o código?",
+        askHint: "Como sair do índice 0 para a posição 1?",
+        chips: [
+          { text: "Por que apareceu 1 1?", message: "Por que apareceu 1 1?" },
+          { text: "Pedir dica", message: "Pode me dar uma dica?" },
+          { text: "Como converter índice?", message: "Como converter índice 0 em posição 1?" }
+        ],
+        steps: [
+          { line: 1, vars: { L: "2" }, note: "lê L" },
+          { line: 2, vars: { L: "2", C: "2" }, note: "lê C" },
+          { line: 8, vars: { L: "2", C: "2", m: "[[1, 2], [3, 4]]" }, note: "lê os 4 elementos" },
+          { line: 9, vars: { busca: "4" }, note: "lê a busca" },
+          { line: 10, vars: { busca: "4", achou: "False" }, note: "achou = False" },
+          { line: 11, vars: { busca: "4", achou: "False", i: "0" }, note: "i = 0" },
+          { line: 12, vars: { busca: "4", achou: "False", i: "0", j: "0" }, note: "j = 0" },
+          { line: 13, vars: { busca: "4", achou: "False", i: "0", j: "0" }, note: "1 == 4? não" },
+          { line: 12, vars: { busca: "4", achou: "False", i: "0", j: "1" }, note: "j = 1" },
+          { line: 13, vars: { busca: "4", achou: "False", i: "0", j: "1" }, note: "2 == 4? não" },
+          { line: 11, vars: { busca: "4", achou: "False", i: "1" }, note: "i = 1" },
+          { line: 12, vars: { busca: "4", achou: "False", i: "1", j: "0" }, note: "j = 0" },
+          { line: 13, vars: { busca: "4", achou: "False", i: "1", j: "0" }, note: "3 == 4? não" },
+          { line: 12, vars: { busca: "4", achou: "False", i: "1", j: "1" }, note: "j = 1" },
+          { line: 13, vars: { busca: "4", achou: "False", i: "1", j: "1" }, note: "4 == 4? sim" },
+          { line: 14, vars: { busca: "4", achou: "False", i: "1", j: "1" }, out: "1 1", note: "print(i, j) — base 0" },
+          { line: 15, vars: { busca: "4", achou: "True", i: "1", j: "1" }, note: "achou = True" },
+          { line: 16, vars: { busca: "4", achou: "True", i: "1", j: "1" }, note: "not achou? não" }
+        ],
+        tutor: {
+          opening: "Antes de rodar: quantas vezes o laço interno roda para cada linha? Como converter índice 0 para posição 1?",
+          codeRefusal: "Não vou entregar o código. A busca encontrou o 4: em qual índice a timeline parou?",
+          hint: "O Python conta de 0; o enunciado pede posição base 1. O que falta somar no `print` da linha 14?",
+          fallback: "A timeline mostra i e j no momento em que a comparação deu verdadeiro. Compare com a posição esperada.",
+          afterRun: (pred, actual) => `Você previu ${pred}; a saída foi ${actual}. O enunciado espera "2 2". O que a linha 14 imprimiu?`
+        }
+      }
+    }
+  };
+
+  const DEFAULT_STATE = {
+    title: "Triângulo de 1s",
+    professor: "Prof. Francisco",
+    codeId: "cs2-ep4-10-triangulo",
+    chapter: "",
+    checkpoint: "",
+    statement: "Leia um inteiro n e desenhe um triângulo de 1s com n linhas, alinhado à direita. Para n = 3, a saída esperada é:\n--1--\n-111-\n11111",
+    model: "qwen3:14b",
+    style: "socratic",
+    noCode: true,
+    noSolution: true,
+    predict: true,
+    allowPseudo: false,
+    maxSentences: 3,
+    useCustomPrompt: false,
+    customPrompt: ""
+  };
+
+  let state = loadState() || { ...DEFAULT_STATE };
+  let codeTouched = false;
+  let previewQuestion = 0;
+  let student = {
+    prediction: null,
+    predictionLabel: null,
+    ran: false,
+    hintLevel: 0,
+    steps: [],
+    active: 0,
+    timer: null
+  };
+
+  const $ = (id) => document.getElementById(id);
+  const els = {
+    title: $("title"), professor: $("professorName"), codeId: $("codeId"), statement: $("statement"), model: $("model"),
+    presetGrid: $("presetGrid"), chapterGrid: $("chapterGrid"),
+    noCode: $("noCode"), noSolution: $("noSolution"),
+    predict: $("predict"), allowPseudo: $("allowPseudo"), maxSentences: $("maxSentences"),
+    maxSentencesValue: $("maxSentencesValue"), promptBox: $("promptBox"),
+    useCustom: $("useCustom"), customPrompt: $("customPrompt"),
+    previewStyleName: $("previewStyleName"), previewReply: $("previewReply"),
+    activityCodeChip: $("activityCodeChip"), studentUrlChip: $("studentUrlChip"),
+    jsonBox: $("jsonBox"), studentTitle: $("studentTitle"),
+    studentFullStatement: $("studentFullStatement"),
+    studentStyleTag: $("studentStyleTag"), studentProfessorTag: $("studentProfessorTag"),
+    studentModelTag: $("studentModelTag"),
+    tutorName: $("tutorName"), tutorSubtitle: $("tutorSubtitle"), chat: $("chat"), chatInput: $("chatInput"),
+    codeEditor: $("codeEditor"), gutter: $("gutter"), runBtn: $("runBtn"),
+    stepSlider: $("stepSlider"), stepSliderLabel: $("stepSliderLabel"),
+    stepList: $("stepList"), varsGrid: $("varsGrid"), outputBox: $("outputBox"),
+    compareBox: $("compareBox"), stepCounter: $("stepCounter"), predictionCard: $("predictionCard"),
+    predictionQuestion: $("predictionQuestion"), predictionChoices: $("predictionChoices"),
+    quickChips: $("quickChips"), editorHint: $("editorHint"),
+    toast: $("toast")
+  };
+
+  function currentPreview() {
+    const chapter = CHAPTERS[state.chapter];
+    return (chapter && chapter.preview) || TRIANGLE_PREVIEW;
+  }
+
+  function predictionOptions() {
+    return currentPreview().predict.options.map((option) => (
+      typeof option === "object" ? option : { value: option, label: option }
+    ));
+  }
+
+  function outputLines() {
+    return student.steps.filter((step) => step.out !== undefined).map((step) => step.out);
+  }
+
+  function actualResult() {
+    return currentPreview().kind === "triangle" ? outputLines().length : currentPreview().result;
+  }
+
+  function actualLabel() {
+    const actual = actualResult();
+    return currentPreview().kind === "triangle" ? `${actual} linhas` : actual;
+  }
+
+  function openingText() {
+    const preset = PRESETS[state.style] || PRESETS.socratic;
+    return state.checkpoint || (currentPreview().tutor && currentPreview().tutor.opening) || preset.opening;
+  }
+
+  function afterRunText() {
+    const preset = PRESETS[state.style] || PRESETS.socratic;
+    const preview = currentPreview();
+    const actual = actualResult();
+    if (preview.tutor && preview.tutor.afterRun) return preview.tutor.afterRun(student.predictionLabel, actual);
+    return preset.afterRun(student.prediction, actual);
+  }
+
+  function renderPrediction() {
+    const predict = currentPreview().predict;
+    els.predictionQuestion.textContent = predict.question;
+    els.predictionChoices.textContent = "";
+    predictionOptions().forEach((option) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "choice";
+      button.dataset.value = String(option.value);
+      button.setAttribute("aria-pressed", "false");
+      button.textContent = option.label;
+      button.addEventListener("click", () => setPrediction(option.value, option.label));
+      els.predictionChoices.appendChild(button);
+    });
+  }
+
+  function renderChips() {
+    els.quickChips.textContent = "";
+    (currentPreview().chips || []).forEach((chip) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "chip";
+      button.textContent = chip.text;
+      button.addEventListener("click", () => sendStudentMessage(chip.message));
+      els.quickChips.appendChild(button);
+    });
+  }
+
+  function slugify(text) {
+    return text.normalize("NFD").replace(/[̀-ͯ]/g, "")
+      .toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 64) || "atividade";
+  }
+
+  function esc(text) {
+    return String(text).replace(/[&<>"']/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch]));
+  }
+
+  function fmt(text) {
+    return esc(text).replace(/`([^`]+)`/g, "<code>$1</code>");
+  }
+
+  function loadState() {
+    try {
+      const raw = localStorage.getItem("mt-studio-activity");
+      if (!raw) return null;
+      const parsed = JSON.parse(raw);
+      if (!parsed || typeof parsed !== "object") return null;
+      return { ...DEFAULT_STATE, ...parsed, useCustomPrompt: Boolean(parsed.useCustomPrompt) };
+    } catch (error) {
+      return null;
+    }
+  }
+
+  function saveState() {
+    try { localStorage.setItem("mt-studio-activity", JSON.stringify(state)); } catch (error) { /* sem storage */ }
+  }
+
+  function buildPrompt() {
+    if (state.useCustomPrompt && state.customPrompt.trim()) return state.customPrompt;
+    const preset = PRESETS[state.style] || PRESETS.socratic;
+    const lines = [
+      `Você é o tutor de CS2 da atividade "${state.title || "Sem título"}".`,
+      "",
+      "Enunciado da atividade:",
+      state.statement.trim() || "(sem enunciado)",
+      "",
+      "Regras que valem sempre:",
+      "1. Use a linha do tempo real da execução como fonte de verdade. Nunca invente valores, passos ou resultados.",
+      "2. Nunca forneça a solução completa, código pronto, pseudocódigo final ou uma lista de passos que resolva o exercício.",
+      "3. Responda em português do Brasil.",
+      `4. Responda em no máximo ${state.maxSentences} frases por vez.`,
+      ""
+    ];
+    let n = 5;
+    if (state.predict) { lines.push(`${n}. Peça ao aluno para prever o resultado antes de revelar a execução.`); n += 1; }
+    if (state.noCode) {
+      lines.push(state.allowPseudo
+        ? `${n}. Não mostre blocos de código nem trechos do exercício; pseudocódigo mínimo é permitido, desde que não entregue a solução.`
+        : `${n}. Não mostre blocos de código, trechos de código do exercício nem pseudocódigo.`);
+      n += 1;
+    } else if (state.allowPseudo) {
+      lines.push(`${n}. Pseudocódigo mínimo é permitido, mas não a solução final.`); n += 1;
+    }
+    if (state.noSolution) { lines.push(`${n}. Se o aluno pedir a resposta, recuse e faça uma pergunta que o ajude a descobrir.`); n += 1; }
+    lines.push("", `Estilo do tutor — ${preset.label}:`, ...preset.rules.map((rule) => `- ${rule}`));
+    if (state.checkpoint) lines.push("", `Checkpoint sugerido: ${state.checkpoint}`);
+    return lines.join("\n");
+  }
+
+  function activityConfig() {
+    return {
+      activity_id: state.codeId,
+      title: state.title,
+      professor: state.professor,
+      chapter: state.chapter || null,
+      checkpoint: state.checkpoint || "",
+      statement: state.statement,
+      model: state.model,
+      style: state.style,
+      guards: {
+        no_code: state.noCode,
+        no_solution: state.noSolution,
+        predict_first: state.predict,
+        allow_pseudocode: state.allowPseudo,
+        max_sentences: state.maxSentences
+      },
+      system_prompt: buildPrompt(),
+      student_url: `https://vision.ufabc.edu.br/tutor/aluno?atividade=${encodeURIComponent(state.codeId)}`,
+      created_by: state.professor
+    };
+  }
+
+  function showToast(message) {
+    els.toast.textContent = message;
+    els.toast.classList.add("show");
+    clearTimeout(showToast.timer);
+    showToast.timer = setTimeout(() => els.toast.classList.remove("show"), 2600);
+  }
+
+  async function copyText(text, message) {
+    try {
+      await navigator.clipboard.writeText(text);
+      showToast(message || "Copiado.");
+    } catch (error) {
+      const area = document.createElement("textarea");
+      area.value = text;
+      area.setAttribute("readonly", "");
+      area.style.position = "fixed";
+      area.style.opacity = "0";
+      document.body.appendChild(area);
+      area.select();
+      try {
+        document.execCommand("copy");
+        showToast(message || "Copiado.");
+      } catch (fallbackError) {
+        showToast("Selecione o texto e copie manualmente.");
+      }
+      area.remove();
+    }
+  }
+
+  function syncFormFromState() {
+    els.title.value = state.title;
+    els.professor.value = state.professor;
+    els.codeId.value = state.codeId;
+    els.statement.value = state.statement;
+    els.model.value = state.model;
+    els.noCode.checked = state.noCode;
+    els.noSolution.checked = state.noSolution;
+    els.predict.checked = state.predict;
+    els.allowPseudo.checked = state.allowPseudo;
+    els.maxSentences.value = state.maxSentences;
+    els.maxSentencesValue.textContent = `${state.maxSentences} frases`;
+    els.useCustom.checked = state.useCustomPrompt;
+    if (state.customPrompt) els.customPrompt.value = state.customPrompt;
+    document.querySelectorAll(".preset").forEach((button) => {
+      button.setAttribute("aria-pressed", String(button.dataset.style === state.style));
+    });
+    document.querySelectorAll(".chapter").forEach((button) => {
+      button.setAttribute("aria-pressed", String(button.dataset.chapter === state.chapter));
+    });
+  }
+
+  function renderPrompt() {
+    els.promptBox.textContent = buildPrompt();
+    els.jsonBox.textContent = JSON.stringify(activityConfig(), null, 2);
+    els.activityCodeChip.textContent = state.codeId;
+    els.studentUrlChip.textContent = activityConfig().student_url;
+    els.previewStyleName.textContent = (PRESETS[state.style] || PRESETS.socratic).label;
+    els.previewReply.innerHTML = fmt((PRESETS[state.style] || PRESETS.socratic).codeRefusal);
+    els.studentTitle.textContent = state.title;
+    els.studentFullStatement.textContent = state.statement;
+    els.studentStyleTag.textContent = `Tutor ${(PRESETS[state.style] || PRESETS.socratic).label.toLowerCase()}`;
+    els.studentProfessorTag.textContent = state.professor;
+    els.studentModelTag.textContent = state.model;
+    els.tutorSubtitle.textContent = `${state.model} · prompt do professor`;
+  }
+
+  function renderStudentHeader() {
+    els.studentTitle.textContent = state.title;
+    els.studentFullStatement.textContent = state.statement;
+    document.querySelectorAll("[data-student-input]").forEach((tag) => {
+      tag.textContent = currentPreview().input;
+    });
+    els.editorHint.textContent = currentPreview().hint;
+    els.tutorName.textContent = `Tutor ${(PRESETS[state.style] || PRESETS.socratic).label.toLowerCase()}`;
+    els.studentStyleTag.textContent = `Tutor ${(PRESETS[state.style] || PRESETS.socratic).label.toLowerCase()}`;
+    els.studentProfessorTag.textContent = state.professor;
+    els.studentModelTag.textContent = state.model;
+    els.tutorSubtitle.textContent = `${state.model} · prompt do professor`;
+  }
+
+  function renderPreview() {
+    const preset = PRESETS[state.style] || PRESETS.socratic;
+    const preview = currentPreview();
+    const tutor = preview.tutor || {};
+    els.previewStyleName.textContent = preset.label;
+    const sample = previewQuestion % 2 === 0
+      ? (preview.ask || "Só apareceram 2 linhas. Pode me dar o código?")
+      : (preview.askHint || "Por que o range não pega o 3?");
+    const reply = previewQuestion % 2 === 0
+      ? (tutor.codeRefusal || preset.codeRefusal)
+      : (tutor.hint || preset.hint || (preset.hints && preset.hints[0]) || preset.fallback);
+    const bubbles = document.querySelectorAll(".preview-chat .bubble");
+    if (bubbles.length >= 2) {
+      bubbles[0].textContent = "";
+      const meta = document.createElement("span");
+      meta.className = "bubble-meta";
+      meta.textContent = "Aluno";
+      bubbles[0].appendChild(meta);
+      bubbles[0].appendChild(document.createTextNode(sample));
+      bubbles[1].innerHTML = `<span class="bubble-meta">Tutor · ${esc(preset.label)}</span>${fmt(reply)}`;
+    }
+  }
+
+  function applyState() {
+    renderPrompt();
+    renderPreview();
+    renderStudentHeader();
+  }
+
+  function onTitleInput() {
+    state.title = els.title.value;
+    if (!codeTouched) {
+      state.codeId = slugify(state.title);
+      els.codeId.value = state.codeId;
+    }
+    applyState();
+  }
+
+  function onProfessorInput() {
+    state.professor = els.professor.value;
+    applyState();
+  }
+
+  function onCodeIdInput() {
+    codeTouched = true;
+    state.codeId = slugify(els.codeId.value);
+    els.codeId.value = state.codeId;
+    applyState();
+  }
+
+  function onStatementInput() { state.statement = els.statement.value; applyState(); }
+  function onModelChange() { state.model = els.model.value; applyState(); void resetStudent(); }
+
+  function setStyle(style) {
+    state.style = style;
+    document.querySelectorAll(".preset").forEach((button) => {
+      button.setAttribute("aria-pressed", String(button.dataset.style === style));
+    });
+    applyState();
+    void resetStudent();
+  }
+
+  function applyChapter(chapterKey) {
+    const template = CHAPTERS[chapterKey];
+    if (!template) return;
+    state.chapter = chapterKey;
+    state.title = template.title;
+    state.codeId = template.codeId;
+    state.statement = template.statement;
+    state.style = template.style;
+    state.checkpoint = template.checkpoint;
+    state.useCustomPrompt = false;
+    codeTouched = false;
+    syncFormFromState();
+    applyState();
+    void resetStudent();
+    showToast(`Capítulo ${template.label}: ${template.title}`);
+  }
+
+  function onToggle() {
+    state.noCode = els.noCode.checked;
+    state.noSolution = els.noSolution.checked;
+    state.predict = els.predict.checked;
+    state.allowPseudo = els.allowPseudo.checked;
+    applyState();
+    void resetStudent();
+  }
+
+  function onMaxSentences() {
+    state.maxSentences = Number(els.maxSentences.value);
+    els.maxSentencesValue.textContent = `${state.maxSentences} frases`;
+    applyState();
+  }
+
+  function onCustomInput() {
+    state.customPrompt = els.customPrompt.value;
+    state.useCustomPrompt = els.useCustom.checked;
+    applyState();
+  }
+
+  function restoreExample() {
+    state = { ...DEFAULT_STATE };
+    codeTouched = false;
+    syncFormFromState();
+    applyState();
+    void resetStudent();
+    showToast("Exemplo restaurado.");
+  }
+
+  function saveActivity() {
+    saveState();
+    showToast("Atividade salva neste navegador. Exporte o JSON para o serviço.");
+  }
+
+  function copyGeneratedPrompt() {
+    els.customPrompt.value = buildPrompt();
+    state.customPrompt = els.customPrompt.value;
+    state.useCustomPrompt = true;
+    els.useCustom.checked = true;
+    applyState();
+    showToast("Prompt gerado copiado para o editor.");
+  }
+
+  function resetGeneratedPrompt() {
+    state.useCustomPrompt = false;
+    els.useCustom.checked = false;
+    applyState();
+    showToast("Voltou ao prompt gerado.");
+  }
+
+  function openStudentView() {
+    void resetStudent();
+    location.hash = "aluno";
+  }
+
+  function switchView(name) {
+    const isProfessor = name !== "aluno";
+    $("view-professor").hidden = !isProfessor;
+    $("view-aluno").hidden = isProfessor;
+    $("intro").hidden = !isProfessor;
+    $("production").hidden = !isProfessor;
+    $("pageSubtitle").textContent = isProfessor
+      ? "O professor escolhe o estilo do tutor. O sistema monta o prompt, o aluno pratica e o token fica no servidor."
+      : "Prévia do aluno: preveja, execute e investigue com o tutor. O prompt e o token ficam no servidor.";
+    $("tabProfessor").setAttribute("aria-selected", String(isProfessor));
+    $("tabAluno").setAttribute("aria-selected", String(!isProfessor));
+    if (!isProfessor) {
+      renderStudentHeader();
+    }
+  }
+
+  function onHashChange() {
+    switchView(location.hash.replace("#", "") === "aluno" ? "aluno" : "professor");
+  }
+
+  function codeLines() {
+    return els.codeEditor.value.split("\n").length;
+  }
+
+  function syncGutter() {
+    const count = codeLines();
+    els.gutter.textContent = Array.from({ length: count }, (_, index) => index + 1).join("\n");
+    els.gutter.scrollTop = els.codeEditor.scrollTop;
+  }
+
+  function detectInclusive(code) {
+    return code.replace(/\s+/g, "").includes("range(1,n+1)");
+  }
+
+  function buildTriangleSteps(inclusive) {
+    const n = 3;
+    const steps = [{ line: 1, vars: { n: "3" }, note: "lê n" }];
+    const limit = inclusive ? n : n - 1;
+    for (let i = 1; i <= limit; i += 1) {
+      steps.push({ line: 2, vars: { n: "3", i: String(i) }, note: "for" });
+      steps.push({ line: 3, vars: { n: "3", i: String(i) }, note: "calcula linhas" });
+      const linhas = "-".repeat(n - i) + "1".repeat(2 * i - 1) + "-".repeat(n - i);
+      steps.push({ line: 4, vars: { n: "3", i: String(i), linhas }, out: linhas, note: "print" });
+    }
+    steps.push({ line: 2, vars: { n: "3", i: String(limit + 1) }, note: "fim do laço" });
+    return steps;
+  }
+
+  function buildSteps() {
+    const preview = currentPreview();
+    if (preview.kind === "triangle") return buildTriangleSteps(detectInclusive(els.codeEditor.value));
+    return preview.steps.map((step) => ({ ...step, vars: { ...step.vars } }));
+  }
+
+  function renderStepList() {
+    els.stepList.textContent = "";
+    student.steps.forEach((step, index) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = `step-row${index === student.active ? " active" : ""}`;
+      button.setAttribute("role", "listitem");
+      const vars = Object.entries(step.vars).map(([key, value]) => `${key}=${value}`).join("  ");
+      button.innerHTML = `<span class="step-num">${String(index + 1).padStart(2, "0")}</span><span class="step-line">L${step.line}</span><span class="step-vars">${esc(vars)}</span>`;
+      button.title = step.note;
+      button.addEventListener("click", () => {
+        stopRun();
+        setActiveStep(index);
+      });
+      els.stepList.appendChild(button);
+    });
+    els.stepSlider.max = String(Math.max(0, student.steps.length - 1));
+    if (student.active > student.steps.length - 1) student.active = student.steps.length - 1;
+    els.stepSlider.value = String(student.active);
+    els.stepSliderLabel.textContent = `${student.active + 1} / ${student.steps.length}`;
+    els.stepCounter.textContent = `passo ${student.active + 1} de ${student.steps.length}`;
+  }
+
+  function setActiveStep(index) {
+    if (!student.steps.length) return;
+    student.active = Math.max(0, Math.min(index, student.steps.length - 1));
+    document.querySelectorAll(".step-row").forEach((row, rowIndex) => {
+      row.classList.toggle("active", rowIndex === student.active);
+    });
+    els.stepSlider.value = String(student.active);
+    els.stepSliderLabel.textContent = `${student.active + 1} / ${student.steps.length}`;
+    els.stepCounter.textContent = `passo ${student.active + 1} de ${student.steps.length}`;
+    const step = student.steps[student.active];
+    els.varsGrid.textContent = "";
+    currentPreview().vars.forEach((key) => {
+      const box = document.createElement("div");
+      box.className = "var";
+      const value = step.vars[key] === undefined ? "—" : step.vars[key];
+      box.innerHTML = `<span>${key}</span><b>${esc(value)}</b>`;
+      els.varsGrid.appendChild(box);
+    });
+    const printed = student.steps
+      .slice(0, student.active + 1)
+      .filter((item) => item.out !== undefined)
+      .map((item) => item.out);
+    els.outputBox.innerHTML = printed.length
+      ? printed.map((line) => esc(line)).join("\n")
+      : '<span class="empty">(sem saída ainda)</span>';
+    const activeRow = document.querySelectorAll(".step-row")[student.active];
+    if (activeRow) {
+      const listRect = els.stepList.getBoundingClientRect();
+      const rowRect = activeRow.getBoundingClientRect();
+      if (rowRect.top < listRect.top || rowRect.bottom > listRect.bottom) {
+        els.stepList.scrollTop += rowRect.top - listRect.top - (els.stepList.clientHeight - activeRow.offsetHeight) / 2;
+      }
+    }
+  }
+
+  function stopRun() {
+    if (student.timer) {
+      clearInterval(student.timer);
+      student.timer = null;
+      els.runBtn.disabled = false;
+      els.runBtn.textContent = "Executar";
+    }
+  }
+
+  function resetTimeline() {
+    stopRun();
+    student.steps = buildSteps();
+    student.active = 0;
+    student.ran = false;
+    student.hintLevel = 0;
+    els.compareBox.hidden = true;
+    renderStepList();
+    setActiveStep(0);
+  }
+
+  function renderComparison() {
+    const actual = actualLabel();
+    const predicted = student.prediction;
+    els.compareBox.hidden = false;
+    if (predicted === null) {
+      els.compareBox.innerHTML = `<span class="pill pill--warn">sem previsão</span><span>A execução mostrou ${esc(actual)}.</span>`;
+      return;
+    }
+    const match = student.predictionLabel === actual;
+    els.compareBox.innerHTML = match
+      ? `<span class="pill pill--good">previsão confirmada</span><span>Você previu ${esc(student.predictionLabel)}; a saída foi ${esc(actual)}.</span>`
+      : `<span class="pill pill--bad">divergiu</span><span>Você previu ${esc(student.predictionLabel)}; a saída foi ${esc(actual)}. A diferença é o que vamos investigar.</span>`;
+  }
+
+  function finishRun() {
+    student.ran = true;
+    els.runBtn.disabled = false;
+    els.runBtn.textContent = "Executar";
+    renderComparison();
+    if (student.prediction !== null) {
+      addTutorMessage(afterRunText());
+    } else {
+      addTutorMessage(`A execução mostrou ${actualLabel()}. Qual era a sua previsão? Escolha uma opção acima e execute de novo.`);
+    }
+  }
+
+  function runCode() {
+    if (student.prediction === null) {
+      els.predictionCard.scrollIntoView({ behavior: "smooth", block: "center" });
+      showToast("Escolha uma previsão antes de executar.");
+      return;
+    }
+    stopRun();
+    student.steps = buildSteps();
+    student.active = 0;
+    student.ran = false;
+    renderStepList();
+    setActiveStep(0);
+    els.compareBox.hidden = true;
+    const reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduced || student.steps.length <= 1) {
+      setActiveStep(student.steps.length - 1);
+      finishRun();
+      return;
+    }
+    els.runBtn.disabled = true;
+    els.runBtn.textContent = "Executando…";
+    let index = 0;
+    student.timer = setInterval(() => {
+      index += 1;
+      setActiveStep(index);
+      if (index >= student.steps.length - 1) {
+        stopRun();
+        finishRun();
+      }
+    }, 420);
+  }
+
+  function addMessage(role, text) {
+    const bubble = document.createElement("div");
+    bubble.className = `bubble bubble--${role}`;
+    const meta = document.createElement("span");
+    meta.className = "bubble-meta";
+    meta.textContent = role === "student" ? "Você" : "Tutor";
+    bubble.appendChild(meta);
+    const body = document.createElement("span");
+    body.innerHTML = fmt(text);
+    bubble.appendChild(body);
+    els.chat.appendChild(bubble);
+    els.chat.scrollTop = els.chat.scrollHeight;
+    return bubble;
+  }
+
+  function addTutorMessage(text) {
+    const bubble = document.createElement("div");
+    bubble.className = "bubble bubble--tutor";
+    bubble.innerHTML = '<span class="bubble-meta">Tutor</span><span class="typing" aria-label="digitando"><i></i><i></i><i></i></span>';
+    els.chat.appendChild(bubble);
+    els.chat.scrollTop = els.chat.scrollHeight;
+    setTimeout(() => {
+      bubble.innerHTML = `<span class="bubble-meta">Tutor</span>${fmt(text)}`;
+      els.chat.scrollTop = els.chat.scrollHeight;
+    }, 420);
+  }
+
+  function hintForCurrentStyle() {
+    const preview = currentPreview();
+    if (preview.tutor && preview.tutor.hint) return preview.tutor.hint;
+    const preset = PRESETS[state.style] || PRESETS.socratic;
+    if (preset.hints) {
+      const index = Math.min(student.hintLevel, preset.hints.length - 1);
+      const hint = preset.hints[index];
+      student.hintLevel = Math.min(student.hintLevel + 1, preset.hints.length - 1);
+      return hint;
+    }
+    return preset.hint;
+  }
+
+  function tutorReply(text) {
+    const preview = currentPreview();
+    const tutor = preview.tutor || {};
+    const preset = PRESETS[state.style] || PRESETS.socratic;
+    const lower = text.toLowerCase();
+    if (/(c[oó]digo|solu[cç][aã]o|resposta|resolver|corrig)/.test(lower)) return tutor.codeRefusal || preset.codeRefusal;
+    if (/(range|limite|inclui|exclui)/.test(lower)) return hintForCurrentStyle();
+    if (/(quantas|linhas|previ|esperava)/.test(lower) && student.ran && student.prediction !== null) {
+      return afterRunText();
+    }
+    if (/(quantas|linhas)/.test(lower) && !student.ran) {
+      return "Rode o código e compare com a sua previsão. Escolha uma opção acima.";
+    }
+    if (/(dica|ajuda|não entendi|nao entendi)/.test(lower)) return hintForCurrentStyle();
+    return tutor.fallback || preset.fallback;
+  }
+
+  function sendStudentMessage(text) {
+    const value = (text || "").trim();
+    if (!value) return;
+    addMessage("student", value);
+    els.chatInput.value = "";
+    setTimeout(() => addTutorMessage(tutorReply(value)), 260);
+  }
+
+  function resetStudent() {
+    stopRun();
+    student.prediction = null;
+    student.predictionLabel = null;
+    student.ran = false;
+    student.hintLevel = 0;
+    els.chat.textContent = "";
+    renderPrediction();
+    addMessage("tutor", openingText());
+    els.codeEditor.value = currentPreview().code;
+    syncGutter();
+    student.steps = buildSteps();
+    student.active = 0;
+    els.compareBox.hidden = true;
+    renderStepList();
+    setActiveStep(0);
+    renderStudentHeader();
+    renderChips();
+  }
+
+  function onCodeInput() {
+    syncGutter();
+    stopRun();
+    student.steps = buildSteps();
+    student.active = 0;
+    student.ran = false;
+    els.compareBox.hidden = true;
+    renderStepList();
+    setActiveStep(0);
+  }
+
+  function restoreCode() {
+    els.codeEditor.value = currentPreview().code;
+    syncGutter();
+    onCodeInput();
+    showToast("Código de exemplo restaurado.");
+  }
+
+  function setPrediction(value, label) {
+    student.prediction = value;
+    student.predictionLabel = label;
+    document.querySelectorAll(".choice").forEach((choice) => {
+      choice.setAttribute("aria-pressed", String(choice.dataset.value === String(value)));
+    });
+    els.predictionCard.style.borderColor = "";
+    showToast(`Previsão registrada: ${label}. Agora execute.`);
+  }
+
+  function initTheme() {
+    try {
+      const saved = localStorage.getItem("mt-theme");
+      if (saved === "light" || saved === "dark") document.documentElement.setAttribute("data-theme", saved);
+    } catch (error) { /* sem storage */ }
+  }
+
+  function toggleTheme() {
+    const root = document.documentElement;
+    const current = root.getAttribute("data-theme") || (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+    const next = current === "dark" ? "light" : "dark";
+    root.setAttribute("data-theme", next);
+    try { localStorage.setItem("mt-theme", next); } catch (error) { /* sem storage */ }
+  }
+
+  // Eventos
+  els.title.addEventListener("input", onTitleInput);
+  els.professor.addEventListener("input", onProfessorInput);
+  els.codeId.addEventListener("input", onCodeIdInput);
+  els.statement.addEventListener("input", onStatementInput);
+  els.model.addEventListener("change", onModelChange);
+  els.presetGrid.addEventListener("click", (event) => {
+    const button = event.target.closest(".preset");
+    if (button) setStyle(button.dataset.style);
+  });
+  els.chapterGrid.addEventListener("click", (event) => {
+    const button = event.target.closest(".chapter");
+    if (button) applyChapter(button.dataset.chapter);
+  });
+  [els.noCode, els.noSolution, els.predict, els.allowPseudo].forEach((input) => input.addEventListener("change", onToggle));
+  els.maxSentences.addEventListener("input", onMaxSentences);
+  els.useCustom.addEventListener("change", () => { state.useCustomPrompt = els.useCustom.checked; applyState(); });
+  els.customPrompt.addEventListener("input", onCustomInput);
+  $("copyPrompt").addEventListener("click", () => copyText(buildPrompt(), "Prompt copiado."));
+  $("resetPrompt").addEventListener("click", resetGeneratedPrompt);
+  $("copyGenerated").addEventListener("click", copyGeneratedPrompt);
+  $("saveActivity").addEventListener("click", saveActivity);
+  $("restoreExample").addEventListener("click", restoreExample);
+  $("openStudent").addEventListener("click", openStudentView);
+  $("openStudent2").addEventListener("click", openStudentView);
+  $("backToProfessor").addEventListener("click", () => { location.hash = "professor"; });
+  $("previewAnother").addEventListener("click", () => { previewQuestion = (previewQuestion + 1) % 2; renderPreview(); });
+  $("copyStudentUrl").addEventListener("click", () => copyText(activityConfig().student_url, "Link copiado."));
+  $("copyJson").addEventListener("click", () => copyText(JSON.stringify(activityConfig(), null, 2), "JSON copiado."));
+  $("toggleJson").addEventListener("click", () => { els.jsonBox.hidden = !els.jsonBox.hidden; });
+  $("tabProfessor").addEventListener("click", () => { location.hash = "professor"; });
+  $("tabAluno").addEventListener("click", () => { location.hash = "aluno"; });
+  window.addEventListener("hashchange", onHashChange);
+  $("runBtn").addEventListener("click", runCode);
+  $("restoreCode").addEventListener("click", restoreCode);
+  els.codeEditor.addEventListener("input", onCodeInput);
+  els.codeEditor.addEventListener("scroll", syncGutter);
+  els.stepSlider.addEventListener("input", () => { stopRun(); setActiveStep(Number(els.stepSlider.value)); });
+  $("sendBtn").addEventListener("click", () => sendStudentMessage(els.chatInput.value));
+  els.chatInput.addEventListener("keydown", (event) => { if (event.key === "Enter") sendStudentMessage(els.chatInput.value); });
+  $("themeBtn").addEventListener("click", toggleTheme);
+
+  // Inicialização
+  initTheme();
+  syncFormFromState();
+  applyState();
+  resetStudent();
+  onHashChange();
+})();
+</script>
