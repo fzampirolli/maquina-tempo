@@ -17,8 +17,8 @@ laboratórios.
   depois clique em **Enviar prompt (POST)**.
 
 O token é pessoal, não é salvo e não deve ser compartilhado com alunos. A versão
-do aluno usará LTI/SSO, com o token de serviço no servidor. A página não contém
-token, senha, chave SSH nem IP interno.
+do aluno usa o token de serviço no servidor. A página não contém token, senha,
+chave SSH nem IP interno.
 
 ## Estúdio de Atividades
 
@@ -29,8 +29,18 @@ prompt gerado, o cartão da atividade e a prévia do aluno. Os 6 capítulos
 (sequencial, funções, condicional, laço, vetor e matriz) trazem cada um o seu
 próprio código de exemplo, timeline e previsão.
 
-A prévia é local e simulada no navegador; o serviço real do tutor, com prompt e
-token no servidor, ainda não está implantado.
+O estúdio também está publicado no `vision`, em
+`https://vision.ufabc.edu.br/estudio/`.
+
+## Serviço do aluno no vision
+
+- Aluno: `https://vision.ufabc.edu.br/tutor/aluno?atividade=cs2-ep4-10-triangulo`
+- Saúde: `https://vision.ufabc.edu.br/tutor/api/health`
+
+O serviço guarda o prompt e o token no servidor e chama o `qwen3:14b` no
+`guiou-Dell` pelo proxy/túnel do `vision`. O piloto ainda **não tem LTI/SSO**:
+a página é aberta, com fila, cota por IP e filtro de blocos de código. A
+timeline Pyodide será integrada no próximo passo.
 
 ## Código do projeto
 
