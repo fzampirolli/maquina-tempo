@@ -20,17 +20,25 @@ O token é pessoal, não é salvo e não deve ser compartilhado com alunos. A ve
 do aluno usa o token de serviço no servidor. A página não contém token, senha,
 chave SSH nem IP interno.
 
-## Estúdio de Atividades
+## Estúdio de Atividades (no vision)
 
-`https://fzampirolli.github.io/maquina-tempo/estudio.html`
+`https://vision.ufabc.edu.br/estudio/`
 
-Prévia do estúdio do professor: escolher o estilo do tutor e os limites, ver o
-prompt gerado, o cartão da atividade e a prévia do aluno. Os 6 capítulos
-(sequencial, funções, condicional, laço, vetor e matriz) trazem cada um o seu
-próprio código de exemplo, timeline e previsão.
+O estúdio é único e fica no `vision`: escolher um dos 6 capítulos, ajustar o
+estilo e os limites, ver o prompt gerado, o cartão da atividade e a prévia
+**local** do aluno. A prévia é simulada; a página real do aluno usa o serviço.
 
-O estúdio também está publicado no `vision`, em
-`https://vision.ufabc.edu.br/estudio/`.
+O endereço antigo `https://fzampirolli.github.io/maquina-tempo/estudio.html`
+continua funcionando: é uma página de redirecionamento para o estúdio no
+`vision` (preserva `#professor`/`#aluno`).
+
+## Portal do professor (publicar e compartilhar)
+
+`https://vision.ufabc.edu.br/tutor/professor`
+
+O professor entra com o token pessoal, cola o JSON exportado pelo estúdio,
+publica o EP e recebe o link do aluno. Compartilhar com outros professores é
+opcional; o catálogo permite clonar com crédito ao autor.
 
 ## Serviço do aluno no vision
 
