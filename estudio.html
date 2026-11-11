@@ -567,6 +567,15 @@
   .capacity-grid strong { display: block; font-size: 0.79rem; }
   .capacity-grid span { display: block; color: var(--muted); font-size: 0.73rem; line-height: 1.4; margin-top: 2px; }
   .capacity > .hint { margin-top: 9px; }
+  .credits {
+    margin-top: 14px; background: var(--accent-soft);
+    border: 1px solid color-mix(in srgb, var(--accent) 30%, var(--line));
+    border-radius: 14px; padding: 15px;
+  }
+  .credits h3 { font-size: 0.93rem; margin-bottom: 6px; }
+  .credits p { color: var(--ink-2); font-size: 0.8rem; line-height: 1.5; margin: 0 0 7px; }
+  .credits p:last-child { margin-bottom: 0; }
+  .credits strong { color: var(--ink); }
   .mvp { margin-top: 16px; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 15px; }
   .mvp h3 { font-size: 0.93rem; margin-bottom: 7px; }
   .mvp ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 5px; }
@@ -702,7 +711,7 @@
             <div class="field">
               <label for="codeId">Código da atividade</label>
               <input id="codeId" type="text" value="cs2-ep4-10-triangulo" autocomplete="off" spellcheck="false">
-              <span class="hint">Vira o link do aluno: <code>/aluno?atividade=cs2-ep4-10-triangulo</code></span>
+              <span class="hint">Link do aluno (produção): <code id="studentUrlHint" style="overflow-wrap:anywhere;">https://vision.ufabc.edu.br/tutor/aluno?atividade=cs2-ep4-10-triangulo</code></span>
             </div>
             <div class="field">
               <label for="statement">Enunciado</label>
@@ -979,7 +988,7 @@ for i in range(1, n):
         <div class="production-card">
           <span class="num">2</span>
           <h3>Admin publica</h3>
-          <p>Coloca o JSON em <code>activities/&lt;id&gt;.json</code> no vision. O serviço lê o prompt no servidor, nunca no navegador.</p>
+          <p>Coloca o JSON em <code>activities/activities.json</code> (ou um arquivo por atividade) no vision. O serviço lê o prompt no servidor, nunca no navegador.</p>
         </div>
         <div class="production-card">
           <span class="num">3</span>
@@ -1000,6 +1009,18 @@ for i in range(1, n):
         </div>
         <p class="hint">Para 100–200 alunos: 1–2 GPUs + cache + dicas pré-escritas. Para 500+: vários nós de inferência (FILÉ) e modelos menores para dicas curtas.</p>
       </div>
+      <div class="credits" aria-label="Créditos e infraestrutura">
+        <div class="capacity-head">
+          <span class="tag tag--accent">Créditos</span>
+          <h3>Infraestrutura e agradecimento</h3>
+        </div>
+        <p>O tutor usa o servidor <strong>guiou-Dell</strong>, disponibilizado pelo
+          <strong>Prof. Guiou</strong>, com GPU <strong>NVIDIA RTX 2000 Ada (16 GB)</strong>,
+          acessado pelo <code>vision</code> por túnel SSH.</p>
+        <p>Para uso em produção, com centenas de alunos, precisamos de mais máquinas
+          com GPU na rede da UFABC. Se você é professor e pode disponibilizar um
+          servidor, fale com o <strong>Prof. Francisco Zampirolli</strong>.</p>
+      </div>
       <div class="arch" aria-label="Arquitetura">
         <span class="arch-box">Estúdio</span><span class="arch-arrow">→</span>
         <span class="arch-box">activities.json</span><span class="arch-arrow">→</span>
@@ -1009,7 +1030,7 @@ for i in range(1, n):
       </div>
       <ul class="security">
         <li>Prompt e token nunca vão ao navegador do aluno.</li>
-        <li>Token de serviço em arquivo 0640 no vision.</li>
+        <li>Token de serviço em arquivo 0600 no vision.</li>
         <li>Filtro de saída bloqueia código e solução.</li>
         <li>Cota e validade por atividade no serviço.</li>
         <li>LTI/SSO identifica o aluno no próximo passo.</li>
@@ -1019,15 +1040,18 @@ for i in range(1, n):
         <h3>O que já existe e o que falta</h3>
         <ul>
           <li class="done"><span class="box">✓</span><span>Estúdio com presets, prompt gerado e cartão da atividade.</span></li>
-          <li class="done"><span class="box">✓</span><span>Proxy com tokens por professor e teste local (17 testes).</span></li>
-          <li><span class="box"></span><span>Serviço de chat por atividade no vision (FastAPI ou stdlib).</span></li>
-          <li><span class="box"></span><span>Fila/limite de concorrência + dicas pré-escritas + cache.</span></li>
-          <li><span class="box"></span><span>Filtro de saída + testes de prompt injection.</span></li>
+          <li class="done"><span class="box">✓</span><span>Proxy com tokens por professor; <code>TOKENS_FILE</code> ativo no vision.</span></li>
+          <li class="done"><span class="box">✓</span><span>Serviço de chat do aluno no vision (stdlib, loopback, 7 atividades).</span></li>
+          <li class="done"><span class="box">✓</span><span>Fila/limite de concorrência (2 simultâneas, fila 20) e cota por IP.</span></li>
+          <li class="done"><span class="box">✓</span><span>Filtro de saída que remove blocos de código.</span></li>
+          <li><span class="box"></span><span>Dicas pré-escritas + cache de respostas.</span></li>
+          <li><span class="box"></span><span>Testes de prompt injection.</span></li>
           <li><span class="box"></span><span>Teste de carga com 100–200 alunos simulados.</span></li>
-          <li><span class="box"></span><span>LTI/SSO e timeline Pyodide integrada.</span></li>
+          <li><span class="box"></span><span>LTI/SSO e cota por aluno.</span></li>
+          <li><span class="box"></span><span>Timeline Pyodide integrada à página do aluno.</span></li>
         </ul>
       </div>
-      <p class="footnote">Esta página é uma prévia de produto: o prompt e a conversa são gerados no navegador para o professor ver o comportamento. A versão de produção move o prompt para o servidor e usa o token de serviço do proxy.</p>
+      <p class="footnote">Esta página é a prévia do professor: o prompt e a conversa são gerados no navegador para mostrar o comportamento. A versão publicada no vision já move o prompt para o servidor, usa o token de serviço do proxy e aplica fila e cota. A timeline Pyodide e o LTI/SSO são os próximos passos.</p>
     </section>
   </main>
 </div>
@@ -1490,6 +1514,7 @@ for i in range(1, n):
     useCustom: $("useCustom"), customPrompt: $("customPrompt"),
     previewStyleName: $("previewStyleName"), previewReply: $("previewReply"),
     activityCodeChip: $("activityCodeChip"), studentUrlChip: $("studentUrlChip"),
+    studentUrlHint: $("studentUrlHint"),
     jsonBox: $("jsonBox"), studentTitle: $("studentTitle"),
     studentFullStatement: $("studentFullStatement"),
     studentStyleTag: $("studentStyleTag"), studentProfessorTag: $("studentProfessorTag"),
@@ -1709,6 +1734,7 @@ for i in range(1, n):
     els.jsonBox.textContent = JSON.stringify(activityConfig(), null, 2);
     els.activityCodeChip.textContent = state.codeId;
     els.studentUrlChip.textContent = activityConfig().student_url;
+    els.studentUrlHint.textContent = activityConfig().student_url;
     els.previewStyleName.textContent = (PRESETS[state.style] || PRESETS.socratic).label;
     els.previewReply.innerHTML = fmt((PRESETS[state.style] || PRESETS.socratic).codeRefusal);
     els.studentTitle.textContent = state.title;
