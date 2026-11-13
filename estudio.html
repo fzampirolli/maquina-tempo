@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
-<title>Estúdio de Atividades — Máquina do Tempo</title>
-<meta http-equiv="refresh" content="0; url=https://vision.ufabc.edu.br/estudio/">
+<title>Portal do professor — Máquina do Tempo</title>
+<meta http-equiv="refresh" content="0; url=https://vision.ufabc.edu.br/tutor/professor">
 <style>
   :root {
     --bg: #f4f7fb; --surface: #ffffff; --line: #dbe4ef;
@@ -58,27 +58,21 @@
 <body>
   <main class="card">
     <div class="brand"><span class="logo">MT</span><span>Máquina do Tempo</span></div>
-    <h1>O estúdio agora fica no vision.</h1>
-    <p class="lead">Esta página foi movida para o serviço oficial. O link antigo continua funcionando e leva você para o lugar certo.</p>
+    <h1>O estúdio foi incorporado ao portal.</h1>
+    <p class="lead">Crie, edite e publique EPs no portal do professor. O link antigo continua funcionando e leva você para o lugar certo.</p>
     <div class="actions">
-      <a class="btn btn--primary" href="https://vision.ufabc.edu.br/estudio/">
-        <span>Abrir o Estúdio de Atividades</span><span class="arrow">→</span>
-      </a>
-      <a class="btn" href="https://vision.ufabc.edu.br/tutor/professor">
-        <span>Portal do professor — publicar e compartilhar</span><span class="arrow">→</span>
+      <a class="btn btn--primary" href="https://vision.ufabc.edu.br/tutor/professor">
+        <span>Abrir o portal do professor</span><span class="arrow">→</span>
       </a>
       <a class="btn" href="./">
         <span>Voltar ao testador de acesso</span><span class="arrow">→</span>
       </a>
     </div>
-    <p class="note">A prévia do aluno dentro do estúdio é local. A página real do aluno é
-      <a href="https://vision.ufabc.edu.br/tutor/aluno?atividade=cs2-ep4-10-triangulo">/tutor/aluno</a>.</p>
+    <p class="note">A página real do aluno é
+      <a href="https://vision.ufabc.edu.br/tutor/aluno?atividade=cs2-ep04-10-triangulo">/tutor/aluno</a>.</p>
   </main>
   <script>
-    (() => {
-      const hash = location.hash && location.hash !== "#" ? location.hash : "#professor";
-      location.replace("https://vision.ufabc.edu.br/estudio/" + hash);
-    })();
+    location.replace("https://vision.ufabc.edu.br/tutor/professor");
   </script>
 </body>
 </html>
