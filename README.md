@@ -13,6 +13,7 @@ interna da UFABC.
 
 - Release: `https://github.com/fzampirolli/maquina-tempo/releases/tag/v0.1-revisao-2026-11-14`
 - Pacote: `maquina-tempo-review-2026-11-14.tar.gz`
+- Portal demo local: `/tutor/professor`, token `demo-token`; turmas em `/tutor/professor/turmas`
 - Sem GPU: timeline, casos, fluxograma e FAQ lexical.
 - Com GPU: chat com o tutor, busca semântica e RAG de autoria.
 - A instância da UFABC atende ao piloto de 2027 e **não** é oferecida como
