@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Implantar em um PC local — Máquina do Tempo</title>
+<style>
+  :root {
+    --bg: #f8fafc;
+    --card: #ffffff;
+    --text: #1f2937;
+    --muted: #475569;
+    --line: #d7dee8;
+    --blue: #0b4f9c;
+    --blue-soft: #f0f7ff;
+    --green: #166534;
+    --green-soft: #f0fdf4;
+    --amber: #92400e;
+    --amber-soft: #fffbeb;
+    --code: #0f172a;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 24px 16px 48px;
+    background: var(--bg);
+    color: var(--text);
+    font-family: "Segoe UI", system-ui, -apple-system, Roboto, Arial, sans-serif;
+    line-height: 1.55;
+  }
+  main { max-width: 980px; margin: 0 auto; }
+  .top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; flex-wrap: wrap; margin-bottom: 8px; }
+  h1 { margin: 0; color: var(--blue); font-size: clamp(24px, 4vw, 34px); line-height: 1.2; }
+  h2 { margin: 28px 0 10px; color: var(--blue); font-size: 21px; }
+  h3 { margin: 0 0 6px; font-size: 16px; }
+  p { margin: 0 0 12px; }
+  a { color: var(--blue); }
+  .back { font-size: 13px; font-weight: 700; text-decoration: none; border: 1px solid var(--line); border-radius: 999px; padding: 6px 12px; background: #fff; }
+  .lead { color: var(--muted); font-size: 15px; margin: 10px 0 18px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 18px; margin: 14px 0; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; }
+  .ok { background: var(--green-soft); border-color: #bbf7d0; }
+  .warn { background: var(--amber-soft); border-color: #fde68a; }
+  .ok h3 { color: var(--green); }
+  .warn h3 { color: var(--amber); }
+  ul { margin: 8px 0 0 20px; padding: 0; }
+  li { margin: 4px 0; }
+  code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 0.92em; }
+  pre { margin: 8px 0 0; padding: 14px; overflow-x: auto; border-radius: 8px; background: var(--code); color: #e2e8f0; font-size: 13px; line-height: 1.45; }
+  pre code { color: inherit; }
+  table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 14px; }
+  th, td { text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); padding: 9px 8px; }
+  th { background: #f1f5f9; font-size: 13px; }
+  .buttons { display: flex; gap: 10px; flex-wrap: wrap; margin: 16px 0 4px; }
+  .btn { display: inline-block; padding: 10px 14px; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 14px; }
+  .btn-primary { background: var(--blue); color: #fff; }
+  .btn-secondary { background: #fff; color: var(--blue); border: 1px solid var(--line); }
+  .note { font-size: 12.5px; color: var(--muted); }
+  footer { margin-top: 28px; color: var(--muted); font-size: 12px; }
+  @media (max-width: 640px) {
+    body { padding: 16px 12px 32px; }
+    .card { padding: 14px; }
+    pre { font-size: 12px; }
+  }
+</style>
+</head>
+<body>
+<main>
+  <div class="top">
+    <h1>Implantar em um PC local</h1>
+    <a class="back" href="index.html">← Testador</a>
+  </div>
+
+  <p class="lead">
+    Pacote de revisão da <strong>Máquina do Tempo do Código</strong> para
+    rodar a timeline, a FAQ lexical e a página do aluno sem depender da
+    infraestrutura da UFABC. A instância da UFABC atende ao piloto de 2027 e
+    <strong>não é um serviço hospedado</strong> para outras instituições; cada
+    IES deve implantar a sua própria instância.
+  </p>
+
+  <div class="buttons">
+    <a class="btn btn-primary"
+       href="https://github.com/fzampirolli/maquina-tempo/releases/download/v0.1-revisao-2026-11-14/maquina-tempo-review-2026-11-14.tar.gz">
+      Baixar pacote de revisão (.tar.gz)
+    </a>
+    <a class="btn btn-secondary"
+       href="https://github.com/fzampirolli/maquina-tempo/releases/tag/v0.1-revisao-2026-11-14">
+      Ver a release
+    </a>
+    <a class="btn btn-secondary"
+       href="https://github.com/fzampirolli/maquina-tempo-cs2">
+      Código completo (acesso restrito)
+    </a>
+  </div>
+
+  <div class="card">
+    <h2 style="margin-top:0;">Teste em 5 minutos</h2>
+    <p>Você precisa de Docker e de um navegador atual. O pacote não inclui token,
+       senha nem acesso à rede interna da UFABC.</p>
+    <pre><code>tar xzf maquina-tempo-review-2026-11-14.tar.gz
+cd maquina-tempo-review-2026-11-14
+docker compose up --build</code></pre>
+    <p>Sem o plugin <code>docker compose</code>:</p>
+    <pre><code>docker build -t maquina-tempo-review .
+docker run --rm -p 8090:8090 maquina-tempo-review</code></pre>
+    <p>Abra:</p>
+    <pre><code>http://localhost:8090/tutor/aluno?atividade=cs2-ep04-10-triangulo
+http://localhost:8090/tutor/maquina-tempo?atividade=cs2-ep04-10-triangulo
+http://localhost:8090/tutor/consentimento
+http://localhost:8090/tutor/api/health</code></pre>
+    <p class="note">O <code>health</code> deve responder <code>ok: true</code>;
+      <code>upstream.ok: false</code> é esperado, porque este pacote não sobe
+      um Ollama.</p>
+  </div>
+
+  <div class="grid">
+    <div class="card ok">
+      <h3>Funciona sem GPU</h3>
+      <ul>
+        <li>execução real de Python no navegador (Pyodide/WASM);</li>
+        <li>linha do tempo, variáveis, saída e fluxograma;</li>
+        <li>casos de teste e FAQ lexical;</li>
+        <li>páginas do aluno, timeline e consentimento.</li>
+      </ul>
+    </div>
+    <div class="card warn">
+      <h3>Precisa de modelo/GPU</h3>
+      <ul>
+        <li>chat com o tutor socrático;</li>
+        <li>busca semântica com <code>bge-m3</code>;</li>
+        <li>RAG de autoria.</li>
+      </ul>
+      <p class="note">O Ollama roda em CPU com modelos pequenos, mas a latência
+        não atende uma turma de 40 alunos.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2 style="margin-top:0;">Hardware</h2>
+    <table>
+      <thead>
+        <tr><th>Dimensão</th><th>Mínimo / recomendado</th><th>Observação</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Servidor sem GPU</td><td>2–4 núcleos, 4–8 GB de RAM</td><td>timeline e FAQ lexical; sem chat/RAG</td></tr>
+        <tr><td>Servidor com GPU</td><td>4–8 núcleos, 16–32 GB de RAM, 12–16 GB de VRAM</td><td>modelo 14B; disco para pesos, logs e backups</td></tr>
+        <tr><td>Cliente</td><td>navegador atual com WebAssembly</td><td>o Pyodide é baixado no primeiro carregamento; não exige GPU no cliente</td></tr>
+        <tr><td>Disco</td><td>~1 GB para a imagem; mais para modelos</td><td>modelos locais podem ocupar vários GB</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2 style="margin-top:0;">Restrições web</h2>
+    <ul>
+      <li><strong>HTTPS:</strong> em produção, sirva a página e o serviço por HTTPS; <code>localhost</code> é a exceção.</li>
+      <li><strong>Mixed content:</strong> uma página HTTPS não pode chamar um serviço HTTP.</li>
+      <li><strong>CORS:</strong> o serviço precisa permitir a origem do Moodle ou do GitHub Pages em <code>ALLOWED_ORIGINS</code>.</li>
+      <li><strong>CSP:</strong> a timeline precisa de <code>wasm-unsafe-eval</code> e do CDN fixo do Pyodide.</li>
+      <li><strong>Iframe:</strong> o Moodle precisa permitir o iframe; se ele remover <code>&lt;script&gt;</code>/<code>&lt;iframe&gt;</code>, use o bloco de links.</li>
+      <li><strong>Rede:</strong> não exponha o Ollama (11434) nem o proxy (8081); mantenha-os em loopback.</li>
+      <li><strong>Offline:</strong> não há modo offline completo; para isso, espelhe o Pyodide e ajuste a CSP.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2 style="margin-top:0;">Privacidade e escopo</h2>
+    <p>O pacote não contém nomes, emails, matrículas, IPs em claro nem token.
+       O chat exige o aceite do termo de consentimento na versão vigente; os
+       logs são pseudônimos. A timeline e a FAQ lexical funcionam sem chat.</p>
+    <p>O código completo fica no repositório privado
+       <code>fzampirolli/maquina-tempo-cs2</code>. O pacote de revisão é o
+       recorte público para outra IES ou revisor testar localmente. O Artigo 1
+       descreve a arquitetura, as topologias e as restrições de hardware e web.</p>
+  </div>
+
+  <footer>
+    Máquina do Tempo do Código · pacote de revisão de 14/11/2026 · página sem
+    token, sem IP interno e sem dados de alunos.
+  </footer>
+</main>
+</body>
+</html>

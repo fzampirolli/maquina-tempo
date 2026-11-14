@@ -9,9 +9,12 @@
 <div id="mt-ollama-app" data-url=""
   style="font-family: 'Segoe UI',system-ui,Roboto,Arial,sans-serif; line-height: 1.55; color: #1f2937; max-width: 1040px; margin: 0 auto; border: 1px solid #d7dee8; border-radius: 12px; padding: 20px; background: #ffffff; box-sizing: border-box;">
 
-  <h2 style="margin: 0 0 6px 0; color: #0b4f9c; font-size: 23px;">
-    🔌 Teste de acesso ao Ollama — Máquina do Tempo / CS2
-  </h2>
+  <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:12px;">
+    <h2 style="margin: 0 0 6px 0; color: #0b4f9c; font-size: 23px;">
+      🔌 Teste de acesso ao Ollama — Máquina do Tempo / CS2
+    </h2>
+    <button type="button" data-lang-toggle style="flex:0 0 auto; border:1px solid #cbd5e1; background:#fff; color:#475569; border-radius:999px; padding:5px 11px; font:inherit; font-size:12px; font-weight:800; cursor:pointer;">EN</button>
+  </div>
   <p style="margin: 0 0 14px 0; color: #475569; font-size: 14px;">
     Este bloco <strong>executa no navegador do aluno</strong>. Ele fala com o
     <strong>proxy HTTPS institucional</strong>, que encaminha para o
@@ -21,6 +24,8 @@
   <p style="margin: 0 0 14px 0; color: #475569; font-size: 13px;">
     Ferramenta do professor. Para criar, editar e publicar a atividade,
     use o <a href="https://vision.ufabc.edu.br/tutor/professor" style="color:#0b4f9c; font-weight:700;">Portal do professor</a>.
+    Para testar em um PC local, veja
+    <a href="implantar.html" style="color:#0b4f9c; font-weight:700;">Implantar localmente</a>.
   </p>
 
   <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center; background:#f0f7ff; border:1px solid #cfe3ff; border-radius:8px; padding:10px 12px; margin-bottom:16px; font-size:12.5px; color:#1e3a5f;">
@@ -296,6 +301,312 @@
     deve ser embutido no HTML de produção.
   </p>
 </div>
+
+<script>
+window.MT_STRINGS = {"en": {"html": "html", "Testador de acesso ao Ollama — Máquina do Tempo": "Ollama Access Tester — Code Time Machine", "🔌 Teste de acesso ao Ollama — Máquina do Tempo / CS2": "🔌 Ollama Access Test — Code Time Machine / CS2", "Este bloco": "This block", "executa no navegador do aluno": "runs in the student's browser", "proxy HTTPS institucional": "institutional HTTPS proxy", "servidor de modelos": "model server", "Ferramenta do professor. Para criar, editar e publicar a atividade, use o": "Teacher's tool. To create, edit, and publish the activity, use the", "Portal do professor": "Teacher's Portal", "Navegador": "Browser", "→ HTTPS 443 →": "→ HTTPS 443 →", "servidor web": "web server", "proxy": "proxy", "→ túnel SSH →": "→ SSH tunnel →", "servidor de modelos:11434": "model server:11434", "Ollama + modelos": "Ollama + models", "1. Rede e HTTPS": "1. Network and HTTPS", "O navegador alcança a 443 do": "The browser reaches 443 of", "e o Apache encaminha internamente para o proxy.": "and Apache internally forwards to the proxy.", "2. CORS e token": "2. CORS and token", "A origem do Moodle (ou do GitHub Pages) precisa estar liberada; o token prova que você tem acesso ao proxy.": "The origin of Moodle (or GitHub Pages) needs to be allowed; the token proves you have access to the proxy.", "3. Modelo responde": "3. Model responds", "lista os modelos; o POST escolhe um e recebe a resposta do 14B.": "lists the models; a POST request selects one and receives the 14B response.", "URL do serviço (sem barra no fim)": "Service URL (without trailing slash)", "Já preenchida com o proxy do vision (sem barra no fim); ajuste se necessário.": "Pre-filled with the vision proxy (without trailing slash); adjust if necessary.",
+ "obrigatório no proxy institucional": "required on the institutional proxy", "Tipo de API": "API Type", "Ollama — POST /api/chat": "Ollama — POST /api/chat", "Ollama — POST /api/generate": "Ollama — POST /api/generate", "OpenAI-compatível — POST /v1/chat/completions": "OpenAI-compatible — POST /v1/chat/completions", "Personalizado — POST direto na URL": "Custom — POST directly to URL", "O que é:": "What is:", "o formato da chamada.": "the call format.", "Ollama — /api/chat": "Ollama — /api/chat", "usa o formato nativo do Ollama (mensagens);": "uses the native Ollama format (messages);", "usa um prompt simples;": "uses a simple prompt;", "OpenAI": "OpenAI", "usa": "uses", "Personalizado": "Custom", "envia o JSON direto para a URL. No proxy institucional, use": "sends the JSON directly to the URL. In the institutional proxy, use", "Modelo em uso": "Model in use", "Escolha um dos modelos abaixo ou digite o nome. O teste envia": "Choose one of the models below or enter the name. The test sends", "think:false": "think:false", "Token do professor": "Teacher Token", "Não é a senha do Moodle e não é salvo. É a chave pessoal do professor; não compartilhe com alunos.": "It is not the Moodle password and is not saved. It is the teacher's personal key; do not share with students.", "Prompt de teste": "Test Prompt", "Explique em uma frase o que é um laço de repetição em Python.": "Explain in one sentence what a loop is in Python.", "Testar conexão (GET)": "Test connection (GET)", "Listar modelos": "List models", "Enviar prompt (POST)": "Send prompt (POST)", "Limpar": "Clear", "A URL já vem preenchida com o proxy do vision. Informe o token do professor e clique em “Testar conexão”.": "The URL is pre-filled with the Ollama proxy. Enter the teacher's token and click “Test connection”.", "Modelos disponíveis no servidor — clique em um para usar": "Models available on the server — click one to use", "(a saída aparece aqui)": "(output appears here)", "Token: pessoal do professor (não do aluno)": "Token: teacher's personal token (not the student's)", "O token é uma": "The token is a", "chave pessoal do professor": "teacher's personal key", "Por que o aluno não pode receber:": "Why the student cannot receive:", "qualquer coisa colocada no HTML do VPL ou digitada no navegador pode ser vista e copiada pelo aluno. Se o token for para o aluno, ele vaza. Por isso este testador é uma ferramenta do professor.": "anything placed in the VPL HTML or typed in the browser can be seen and copied by the student. If the token goes to the student, it leaks. That's why this tester is a teacher's tool.", "Como o aluno vai usar:": "How the student will use:", "a versão do aluno será um serviço no servidor com login do Moodle via": "the student version will be a service on the server with Moodle login via", "LTI 1.3/SSO": "LTI 1.3/SSO", ". O serviço guarda o token de serviço no servidor e o aluno recebe apenas uma sessão; o token nunca vai ao navegador. O professor define o prompt de restrição de cada atividade no servidor (ex.: “responda só como socrático, nunca forneça trechos de código”), e o aluno não consegue alterá-lo.": ". The service stores the service token on the server and the student receives only a session; the token never goes to the browser. The teacher defines the restriction prompt for each activity on the server (e.g., “answer only in Socratic form, never provide code snippets”), and the student cannot change it.", "Distribuição:": "Distribution:", "o administrador gera um token por professor, guarda o hash e entrega o token em canal privado. O professor usa no testador ou em ferramentas próprias; não coloca no HTML do aluno, no Moodle, em print ou no Git. Revogação e rotação são por professor.": "the administrator generates a token per teacher, stores the hash, and delivers the token via private channel. The teacher uses it in the tester or in personal tools; does not place it in student HTML, Moodle, print, or Git. Revocation and rotation are per teacher.", "Hoje:": "Today:", "o proxy usa um token único de piloto. O próximo passo é o": "the proxy uses a single pilot token. The next step is the", "tokens.json": "tokens.json", "por professor e o serviço do aluno com LTI. O roteiro completo está com o administrador do proxy (": "per teacher and the student service with LTI. The full roadmap is with the proxy administrator (", "docs/TOKENS-E-DISTRIBUICAO.md": "docs/TOKENS-E-DISTRIBUICAO.md", "docs/AUTENTICACAO-E-PROMPTS.md": "docs/AUTHENTICATION-AND-PROMPTS.md", "Roteiro para mostrar aos colegas (5 passos)": "Guidelines to show colleagues (5 steps)", "Abra esta página e confira o diagrama: navegador → servidor web → proxy → servidor de modelos.": "Open this page and check the diagram: browser → web server → proxy → model server.", "Confira a URL, cole o token do professor e clique em": "Check the URL, paste the teacher's token and click on", ": ele lê a versão e o": ": it reads the version and the", "Veja os cartões de modelos: parâmetros, quantização, contexto e capacidades.": "See the model cards: parameters, quantization, context and capabilities.", "Clique em um modelo (ex.:": "Click on a model (e.g.:", "para código ou": "for code or", "para raciocínio) e envie o prompt.": "for reasoning) and send the prompt.", "Mostre o JSON bruto: ele mostra exatamente o que o proxy devolveu.": "Show the raw JSON: it shows exactly what the proxy returned.", "Diferencial e tempo estimado de cada modelo (do mais rápido ao mais lento)": "Difference and estimated time of each model (from fastest to slowest)", "Modelo": "Model", "Diferencial": "Difference", "Tempo estimado*": "Estimated time*", "1ª chamada": "1st call", "Para CS2": "For CS2", "nomic-embed-text": "nomic-embed-text", "Embeddings para RAG/busca semântica;": "Embeddings for RAG/semantic search;", "não conversa": "does not converse", "5–10 s": "5–10 s", "Indexar material": "Index material", "Raciocínio e português; “pensa” antes de responder. O teste envia": "Reasoning and Portuguese; “thinks” before responding. The test sends", "~1–3 s": "~1–3 s", "30–70 s": "30–70 s", "Tutor socrático": "Socratic tutor", "Código: revisão, exemplos e depuração.": "Code: review, examples, and debugging.", "~3–6 s": "~3–6 s", "30–60 s": "30–60 s", "Revisão de código": "Code Review", "gemma4:12b": "gemma4:12b", "Visão, áudio, ferramentas e thinking; bom para material multimídia.": "Vision, audio, tools and thinking; good for multimedia material.", "~4–8 s": "~4–8 s", "Material com imagem/áudio": "Image/Audio Material", "gpt-oss:20b": "gpt-oss:20b", "Raciocínio pesado, 20B; mais lento e mais exigente na GPU.": "Heavy reasoning, 20B; slower and more demanding on GPU.", "~10–25 s": "~10–25 s", "60–120 s": "60–120 s", "Problemas complexos; evitar aula ao vivo": "Complex problems; avoid live class.", "*Estimativas para prompt curto, com o modelo já carregado, na GPU do servidor. A primeira chamada carrega o modelo; prompts longos/contexto grande aumentam o tempo. A ordem é uma estimativa, não uma medição exata.": "*Estimates for short prompt, with model already loaded, on server GPU. The first call loads the model; long prompts/large context increase time. The order is an estimate, not an exact measurement.", "Recomendação para CS2:": "Recommendation for CS2:", "para o tutor socrático,": "for socratic tutor,", "para revisão de código,": "for code review,", "para RAG e": "for RAG and", "só para problemas pontuais.": "only for occasional issues.", "Dicas de modelos": "Model Tips", "— raciocínio e português; “pensa” antes de responder. O teste envia": "— reasoning and Portuguese; “thinks” before responding. The test sends", "para ir direto ao ponto.": "to get to the point.", "— código; bom para revisão e exemplos de programação.": "— code; good for review and programming examples.", "— visão, áudio e ferramentas; útil para materiais com imagem.": "— vision, audio and tools; useful for image-based materials.", "— raciocínio mais pesado; mais lento e mais exigente na GPU.": "— heavier reasoning; slower and more demanding on GPU.", "nomic-embed-text:latest": "nomic-embed-text:latest", "não é de chat": "not chat", "; gera embeddings para RAG. Se escolher, o teste avisa.": "; generates embeddings for RAG. If selected, the test warns.", "Se der erro, veja o checklist": "If there is an error, check the checklist", "Página HTTPS + URL HTTP": "HTTPS page + HTTP URL", "→ o navegador bloqueia (mixed content). Use HTTPS no serviço.": "→ the browser blocks (mixed content). Use HTTPS for the service.", "“Failed to fetch”": "“Failed to fetch”", "→ pode ser CORS, DNS, rede ou servidor fora do ar. Confira F12 → Console/Network.": "→ could be CORS, DNS, network, or server down. Check F12 → Console/Network.", "CORS": "CORS", "→ o serviço precisa responder": "→ the service needs to respond", "Access-Control-Allow-Origin": "Access-Control-Allow-Origin", "para a origem do Moodle/GitHub Pages e tratar": "for the Moodle/GitHub Pages origin and handle", "OPTIONS": "OPTIONS", "→ token ausente/errado. O proxy institucional exige token.": "→ missing/wrong token. The institutional proxy requires a token.", "→ origem ou modelo não permitido para este token.": "→ origin or model not allowed for this token.", "→ cota do token esgotada; fale com o administrador.": "→ token quota exhausted; contact the administrator.", "→ caminho errado. Confira": "→ wrong path. Check", "Timeout": "Timeout", "→ o modelo pode estar carregando na GPU; tente de novo ou use um modelo menor.": "→ the model may be loading on the GPU; try again or use a smaller model.", "GET funciona, POST falha": "GET works, POST fails", "→ quase sempre é o preflight CORS do": "→ is almost always the CORS preflight from", "CSP": "CSP", "→ a página do Moodle pode bloquear conexões para outro domínio (": "→ the Moodle page may block connections to another domain (", "connect-src": "connect-src", "). Veja o Console.": "). Check the Console.", "→ use a versão pública por link (": "→ use the public version by link (", "Máquina do Tempo do Código": "Code Time Machine", ": o próximo passo é um widget Pyodide que executa o código do aluno, grava a linha do tempo e usa a IA para narrar e perguntar em checkpoints. O token não é salvo e não deve ser embutido no HTML de produção.": ": the next step is a Pyodide widget that runs the student's code, records the timeline, and uses AI to narrate and ask questions at checkpoints. The token is not saved and should not be embedded in production HTML.", ". Ele fala com o": ". It talks to the", ", que encaminha para o": ", which forwards to the", "por um túnel SSH. O Ollama continua em": "through an SSH tunnel. Ollama stays at", "; o navegador nunca fala com ele diretamente.": "; the browser never talks to it directly.", "para o proxy institucional. Não é a senha do Moodle e não é a chave do Ollama (o Ollama não usa chave). Cada professor recebe o seu;": "for the institutional proxy. It is not your Moodle password and not the Ollama key (Ollama does not use a key). Each teacher gets their own;", "não compartilhe com alunos": "do not share it with students", "teste-ollama-link-vpl.html": "teste-ollama-link-vpl.html", "Esta é a primeira peça da": "This is the first piece of the"}};
+</script>
+<script>
+/* Tradução da interface (PT padrão / EN) — Máquina do Tempo.
+ *
+ * Cada página define window.MT_STRINGS = { en: { "texto em português": "English" } }
+ * antes do DOMContentLoaded. O script troca textos e atributos estáticos,
+ * guarda a preferência em localStorage e em um cookie de *.ufabc.edu.br para
+ * levar a escolha do portal às páginas do aluno, timeline e consentimento.
+ */
+(() => {
+  "use strict";
+
+  const STORAGE_KEY = "mt:lang";
+  const COOKIE_KEY = "mt_lang";
+  const INLINE = new Set(["STRONG", "EM", "B", "I", "CODE", "SPAN", "SMALL", "BR", "A", "MARK"]);
+  const SKIP_TAGS = new Set(["SCRIPT", "STYLE", "CODE", "PRE", "TEXTAREA"]);
+  let lang = "pt";
+  let records = [];
+  let applying = false;
+  let titleRecord = null;
+  let observer = null;
+
+  function strings() {
+    return (window.MT_STRINGS && window.MT_STRINGS.en) || {};
+  }
+
+  function norm(value) {
+    return String(value == null ? "" : value).replace(/\s+/g, " ").trim();
+  }
+
+  function t(key, vars) {
+    const source = String(key == null ? "" : key);
+    let text = lang === "en"
+      ? (Object.prototype.hasOwnProperty.call(strings(), source) ? strings()[source] : source)
+      : source;
+    if (vars) {
+      for (const [name, value] of Object.entries(vars)) {
+        text = text.split("{" + name + "}").join(String(value));
+      }
+    }
+    return text;
+  }
+
+  function readCookie() {
+    try {
+      const prefix = COOKIE_KEY + "=";
+      for (const part of document.cookie.split(";")) {
+        const item = part.trim();
+        if (item.startsWith(prefix)) {
+          const value = decodeURIComponent(item.slice(prefix.length));
+          if (value === "en" || value === "pt") return value;
+        }
+      }
+    } catch (error) { /* cookie indisponível */ }
+    return "";
+  }
+
+  function writeCookie(value) {
+    try {
+      const secure = location.protocol === "https:" ? "; Secure" : "";
+      const domain = /(^|\.)ufabc\.edu\.br$/i.test(location.hostname)
+        ? "; Domain=.ufabc.edu.br"
+        : "";
+      document.cookie = COOKIE_KEY + "=" + encodeURIComponent(value) +
+        "; Path=/; Max-Age=31536000; SameSite=Lax" + domain + secure;
+    } catch (error) { /* segue com localStorage */ }
+  }
+
+  function readStored() {
+    const cookie = readCookie();
+    if (cookie) return cookie;
+    try {
+      const value = localStorage.getItem(STORAGE_KEY);
+      if (value === "en" || value === "pt") return value;
+    } catch (error) { /* armazenamento indisponível */ }
+    return "pt";
+  }
+
+  function writeStored(value) {
+    try { localStorage.setItem(STORAGE_KEY, value); } catch (error) { /* memória */ }
+    writeCookie(value);
+  }
+
+  function remember(record) {
+    records.push(record);
+  }
+
+  function restore() {
+    for (const record of records) {
+      try {
+        if (record.kind === "text") {
+          if (record.node.isConnected) record.node.nodeValue = record.original;
+        } else if (record.kind === "html") {
+          if (record.element.isConnected) record.element.innerHTML = record.original;
+        } else if (record.kind === "attr") {
+          if (record.element.isConnected) {
+            record.element.setAttribute(record.name, record.original);
+          }
+        }
+      } catch (error) { /* nó removido */ }
+    }
+    records = [];
+  }
+
+  function translateText(node) {
+    const raw = node.nodeValue;
+    if (!raw) return;
+    const key = norm(raw);
+    const english = strings()[key];
+    if (typeof english !== "string") return;
+    const lead = raw.match(/^\s*/)[0];
+    const trail = raw.match(/\s*$/)[0];
+    remember({ kind: "text", node, original: raw });
+    node.nodeValue = lead + english + trail;
+  }
+
+  function translateAttributes(element) {
+    for (const name of ["placeholder", "title", "aria-label", "data-help"]) {
+      const value = element.getAttribute(name);
+      if (!value) continue;
+      const english = strings()[norm(value)];
+      if (typeof english !== "string") continue;
+      remember({ kind: "attr", element, name, original: value });
+      element.setAttribute(name, english);
+    }
+  }
+
+  function translateElement(element) {
+    if (!element || element.nodeType !== 1) return;
+    if (element.hasAttribute("data-i18n-skip")) return;
+    if (SKIP_TAGS.has(element.tagName)) return;
+    translateAttributes(element);
+
+    const explicit = element.getAttribute("data-i18n-html")
+      || element.getAttribute("data-i18n");
+    if (explicit) {
+      const english = strings()[norm(explicit)];
+      if (typeof english === "string") {
+        remember({ kind: "html", element, original: element.innerHTML });
+        if (element.hasAttribute("data-i18n-html")) element.innerHTML = english;
+        else element.textContent = english;
+        return;
+      }
+    }
+
+    const children = Array.from(element.children || []);
+    if (children.length) {
+      const inlineOnly = children.every((child) => INLINE.has(child.tagName));
+      if (inlineOnly) {
+        const key = norm(element.innerHTML);
+        const english = strings()[key];
+        if (typeof english === "string") {
+          remember({ kind: "html", element, original: element.innerHTML });
+          element.innerHTML = english;
+          return;
+        }
+      }
+      for (const child of children) translateElement(child);
+      for (const node of Array.from(element.childNodes)) {
+        if (node.nodeType === 3) translateText(node);
+      }
+      return;
+    }
+    for (const node of Array.from(element.childNodes)) {
+      if (node.nodeType === 3) translateText(node);
+    }
+  }
+
+  function updateToggles() {
+    document.documentElement.lang = lang === "pt" ? "pt-BR" : "en";
+    document.querySelectorAll("[data-lang-toggle]").forEach((button) => {
+      button.textContent = lang === "pt" ? "EN" : "PT";
+      const label = lang === "pt" ? "Mudar para inglês" : "Switch to Portuguese";
+      button.setAttribute("aria-label", label);
+      button.setAttribute("title", label);
+      button.setAttribute("aria-pressed", lang === "en" ? "true" : "false");
+    });
+  }
+
+  function applyTitle() {
+    if (lang === "en") {
+      const key = norm(document.title);
+      const english = strings()[key];
+      if (typeof english === "string") {
+        titleRecord = { original: document.title, translated: english };
+        document.title = english;
+      }
+    } else if (titleRecord && document.title === titleRecord.translated) {
+      document.title = titleRecord.original;
+    }
+    titleRecord = null;
+  }
+
+  function connectObserver() {
+    if (observer || typeof MutationObserver !== "function") return;
+    observer = new MutationObserver((mutations) => {
+      if (lang !== "en" || applying) return;
+      for (const mutation of mutations) {
+        for (const node of mutation.addedNodes || []) {
+          if (node.nodeType === 3) translateText(node);
+          else if (node.nodeType === 1) translateElement(node);
+        }
+      }
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+  }
+
+  function disconnectObserver() {
+    if (observer) {
+      observer.disconnect();
+      observer = null;
+    }
+  }
+
+  function apply(root) {
+    if (applying) return;
+    applying = true;
+    try {
+      disconnectObserver();
+      restore();
+      if (lang === "en") {
+        const start = root && root.nodeType === 1 ? root : document.body;
+        if (start) translateElement(start);
+        connectObserver();
+      }
+      applyTitle();
+      updateToggles();
+      try {
+        window.dispatchEvent(new CustomEvent("mt:langchange", { detail: { lang } }));
+      } catch (error) { /* navegador antigo */ }
+    } finally {
+      applying = false;
+    }
+  }
+
+  function broadcast() {
+    const message = { type: "mt:lang", lang };
+    try {
+      if (window.parent && window.parent !== window) {
+        window.parent.postMessage(message, location.origin);
+      }
+    } catch (error) { /* pai inacessível */ }
+    for (let index = 0; index < window.frames.length; index += 1) {
+      try { window.frames[index].postMessage(message, location.origin); } catch (error) { /* iframe */ }
+    }
+  }
+
+  function setLang(value, options = {}) {
+    lang = value === "en" ? "en" : "pt";
+    if (options.store !== false) writeStored(lang);
+    apply();
+    if (options.broadcast !== false) broadcast();
+  }
+
+  function toggle() {
+    setLang(lang === "pt" ? "en" : "pt");
+  }
+
+  function init() {
+    lang = readStored();
+    // Se a preferência veio do localStorage, grava o cookie compartilhado.
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (!readCookie() && (stored === "en" || stored === "pt")) writeCookie(stored);
+    } catch (error) { /* sem localStorage */ }
+    document.querySelectorAll("[data-lang-toggle]").forEach((button) => {
+      if (button.hasAttribute("data-lang-embed-hide") && window.self !== window.top) {
+        button.hidden = true;
+        return;
+      }
+      button.addEventListener("click", toggle);
+    });
+    apply();
+    window.addEventListener("storage", (event) => {
+      if (event.key === STORAGE_KEY && (event.newValue === "en" || event.newValue === "pt")) {
+        setLang(event.newValue, { store: false, broadcast: false });
+      }
+    });
+    window.addEventListener("message", (event) => {
+      if (event.origin !== location.origin) return;
+      if (event.data && event.data.type === "mt:lang") {
+        setLang(event.data.lang, { store: false, broadcast: false });
+      }
+    });
+  }
+
+  window.MT = {
+    t,
+    apply,
+    setLang,
+    toggle,
+    get lang() { return lang; },
+  };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();
+
+</script>
 
 <script>
 (() => {
