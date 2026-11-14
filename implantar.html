@@ -172,6 +172,12 @@ http://localhost:8090/tutor/api/health</code></pre>
     <p>O pacote não contém nomes, emails, matrículas, IPs em claro nem token.
        O chat exige o aceite do termo de consentimento na versão vigente; os
        logs são pseudônimos. A timeline e a FAQ lexical funcionam sem chat.</p>
+    <p><strong>Este pacote é público e não tem controle de turma.</strong> Em
+       produção, o professor pode distribuir os EPs em HTML, mas a URL do EP,
+       sozinha, não é credencial. O desenho recomendado combina link assinado
+       com expiração, código de turma, cookie <code>HttpOnly</code> e cota por
+       turma. Isso reduz uso casual; para garantir “apenas matriculados”, é
+       preciso LTI/SSO com o Moodle ou código individual por aluno.</p>
     <p>O código completo fica no repositório privado
        <code>fzampirolli/maquina-tempo-cs2</code>. O pacote de revisão é o
        recorte público para outra IES ou revisor testar localmente. O Artigo 1
