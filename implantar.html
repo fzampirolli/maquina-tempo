@@ -100,7 +100,10 @@
        senha nem acesso à rede interna da UFABC.</p>
     <pre><code>tar xzf maquina-tempo-review-2026-11-14.tar.gz
 cd maquina-tempo-review-2026-11-14
-docker compose up --build</code></pre>
+docker compose up --build
+
+# com o serviço no ar, em outro terminal:
+./testar.sh</code></pre>
     <p>Sem o plugin <code>docker compose</code>:</p>
     <pre><code>docker build -t maquina-tempo-review .
 docker run --rm -p 8090:8090 maquina-tempo-review</code></pre>
